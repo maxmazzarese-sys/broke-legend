@@ -1,0 +1,13 @@
+.games{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 18px}
+.games button{border:1px solid rgba(232,195,106,.28);background:0;color:var(--ink);border-radius:999px;padding:8px 14px;font:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.games button.on{background:rgba(232,195,106,.16);color:var(--gold);border-color:rgba(232,195,106,.45)}
+.gamebox{display:none}.gamebox.on{display:block}
+.wheelwrap{display:flex;flex-direction:column;align-items:center;gap:12px;margin:8px 0 16px}
+.wheel{width:168px;height:168px;border-radius:50%;border:8px solid var(--gold);background:conic-gradient(#0a7a32 0 10deg,#c23b3b 10deg 20deg,#1a1a1a 20deg 30deg,#c23b3b 30deg 40deg,#1a1a1a 40deg 50deg,#c23b3b 50deg 60deg,#1a1a1a 60deg 70deg,#c23b3b 70deg 80deg,#1a1a1a 80deg 90deg,#c23b3b 90deg 100deg,#1a1a1a 100deg 110deg,#c23b3b 110deg 120deg,#1a1a1a 120deg 130deg,#c23b3b 130deg 140deg,#1a1a1a 140deg 150deg,#c23b3b 150deg 160deg,#1a1a1a 160deg 170deg,#c23b3b 170deg 180deg,#1a1a1a 180deg 190deg,#c23b3b 190deg 200deg,#1a1a1a 200deg 210deg,#c23b3b 210deg 220deg,#1a1a1a 220deg 230deg,#c23b3b 230deg 240deg,#1a1a1a 240deg 250deg,#c23b3b 250deg 260deg,#1a1a1a 260deg 270deg,#c23b3b 270deg 280deg,#1a1a1a 280deg 290deg,#c23b3b 290deg 300deg,#1a1a1a 300deg 310deg,#c23b3b 310deg 320deg,#1a1a1a 320deg 330deg,#c23b3b 330deg 340deg,#1a1a1a 340deg 350deg,#c23b3b 350deg 360deg);box-shadow:0 12px 30px rgba(0,0,0,.35);transition:transform 2.2s cubic-bezier(.12,.7,.08,1)}
+.pin{width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:14px solid var(--gold)}
+.pick{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:0 0 10px}
+.pick button{border:1px solid rgba(232,195,106,.28);background:0;color:var(--ink);border-radius:12px;padding:10px 14px;font:inherit;font-weight:700;cursor:pointer}
+.pick button.on{background:rgba(232,195,106,.16);color:var(--gold)}
+.street{display:flex;gap:8px;flex-wrap:wrap;min-height:76px;margin:8px 0 12px;justify-content:center}
+.roadwrap{display:flex;justify-content:center;margin:8px 0 12px}
+#crossyCanvas{width:min(320px,100%);height:420px;border-radius:16px;background:#0b1a12;border:1px solid rgba(232,195,106,.28);display:block}
