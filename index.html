@@ -144,16 +144,17 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <p class="note">Felt credits have no cash value. Donations are tips, not bets.</p>
 </div>
 <div id="roulette" class="gamebox">
-<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Bet <b id="rBetLbl">10</b></div></div>
-<div class="wheelwrap"><div class="pin"></div><div class="wheel" id="wheel"></div><div class="msg" id="rMsg">Pick red, black, or green.</div></div>
-<div class="pick">
-<button type="button" data-color="red">Red 2x</button>
-<button type="button" data-color="black">Black 2x</button>
-<button type="button" data-color="green">Green 36x</button>
+<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>On table <b id="rOn">0</b></div></div>
+<div class="bowl">
+<div class="wheelspin" id="wheelSpin"><div class="wheelface" id="wheelFace"></div></div>
+<div class="balltrack" id="ballTrack"><i class="ball"></i></div>
+<div class="pin"></div>
 </div>
+<div class="msg" id="rMsg">Pick a chip, drop it on a number.</div>
+<div class="rchips" id="rChips"></div>
+<div class="rtable" id="rTable"></div>
 <div class="actions">
-<button type="button" id="rDown">- Bet</button>
-<button type="button" id="rUp">+ Bet</button>
+<button type="button" id="rClear">Clear</button>
 <button type="button" id="rSpin">Spin</button>
 </div>
 </div>
