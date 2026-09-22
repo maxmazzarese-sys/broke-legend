@@ -1,2 +1,1 @@
-# broke-legend
-Broke Legend donate and play site
+Broke Legend site. Donate, play blackjack, leaderboard.
