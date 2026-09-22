@@ -9,9 +9,22 @@
 :root{--felt:#07140c;--gold:#e8c36a;--ink:#f6f1e4;--muted:#b8b09a;--red:#c23b3b}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"DM Sans",system-ui,sans-serif;background:radial-gradient(1200px 600px at 50% -10%,rgba(232,195,106,.16),transparent 55%),linear-gradient(180deg,var(--felt),#041009);color:var(--ink);min-height:100vh}
-.topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:center;flex-wrap:wrap;gap:4px;padding:12px;background:rgba(4,16,9,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,195,106,.22)}
-.topbar a,.topbar button.nav{appearance:none;border:0;background:0;color:var(--ink);font:inherit;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:10px 14px;border-radius:999px;cursor:pointer}
+.topbar{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:10px 12px 10px 8px;background:rgba(4,16,9,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,195,106,.22)}
+.navlinks{display:flex;justify-content:center;flex-wrap:wrap;gap:4px}
+.topbar a,.topbar button.nav{appearance:none;border:0;background:0;color:var(--ink);font:inherit;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:10px 12px;border-radius:999px;cursor:pointer}
 .topbar a:hover,.topbar button.nav:hover,.topbar a.active{background:rgba(232,195,106,.14);color:var(--gold)}
+.profile{width:36px;height:36px;border-radius:50%;border:1px solid rgba(232,195,106,.4);background:rgba(232,195,106,.16);color:var(--gold);font:inherit;font-weight:700;cursor:pointer}
+.gate{position:fixed;inset:0;z-index:50;background:rgba(4,16,9,.86);display:flex;align-items:center;justify-content:center;padding:20px}
+.gate.hidden{display:none}
+.gatebox{width:min(420px,100%);border:1px solid rgba(232,195,106,.28);background:linear-gradient(180deg,rgba(13,34,22,.96),rgba(7,20,12,.98));border-radius:24px;padding:28px 22px}
+.gatebox h2{margin-bottom:8px}
+.gatebox .sub{margin-bottom:16px}
+.gatebox input{width:100%;margin:0 0 10px;background:rgba(0,0,0,.28);border:1px solid rgba(232,195,106,.3);color:var(--ink);border-radius:14px;padding:12px;font:inherit}
+.gateErr{color:#e08a8a;text-align:center;font-size:13px;min-height:18px;margin:0 0 8px}
+.menu{position:absolute;right:12px;top:58px;width:220px;background:#0c1c14;border:1px solid rgba(232,195,106,.28);border-radius:16px;padding:14px;display:none;z-index:30}
+.menu.show{display:block}
+.menu p{color:var(--muted);font-size:13px;margin:4px 0}
+.menu b{color:var(--ink)}
 .wrap{display:flex;justify-content:center;padding:28px 16px 48px}
 .table{width:min(760px,100%);border:1px solid rgba(232,195,106,.28);background:linear-gradient(180deg,rgba(13,34,22,.92),rgba(7,20,12,.96));border-radius:28px;padding:36px 24px 28px}
 .eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:var(--gold);font-weight:600;text-align:center}
@@ -59,11 +72,35 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 </head>
 <body>
 <nav class="topbar">
+<div class="navlinks">
 <a href="#donate" class="active" data-tab="donate">Donate</a>
 <a href="#play" data-tab="play">Play</a>
 <a href="#leaderboard" data-tab="leaderboard">Leaderboard</a>
 <button type="button" class="nav" id="shareBtn">Share</button>
+</div>
+<button type="button" class="profile" id="profileBtn" aria-label="Profile">?</button>
 </nav>
+<div class="menu" id="profileMenu">
+<p>Signed in as</p>
+<p><b id="menuName">—</b></p>
+<p id="menuEmail">—</p>
+<button class="ghost" id="logoutBtn" type="button">Log out</button>
+</div>
+<div class="gate" id="gate">
+<div class="gatebox">
+<p class="eyebrow">Table pass</p>
+<h2 id="gateTitle">Sign up</h2>
+<p class="sub">Username is unique. Pick one. It cannot be used again.</p>
+<form id="authForm">
+<input id="authUser" type="text" autocomplete="username" placeholder="Username" maxlength="16" />
+<input id="authEmail" type="email" autocomplete="email" placeholder="Email" />
+<input id="authPass" type="password" autocomplete="new-password" placeholder="Password" minlength="6" />
+<p class="gateErr" id="gateErr"></p>
+<button class="cta" id="authGo" type="submit">Create account</button>
+</form>
+<button class="ghost" id="authSwitch" type="button">Have an account? Log in</button>
+</div>
+</div>
 <div class="wrap"><main class="table">
 <section id="donate" class="panel show">
 <p class="eyebrow">The Bankroll</p>
@@ -120,5 +157,6 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <p class="foot">Free play. Donations support the creator. 18+. Powered by <a href="https://whop.com/donateforcasino-18">Whop</a>.</p>
 </main></div>
 <div class="toast" id="toast">Link copied</div>
+<script src="auth.js"></script>
 <script src="play.js"></script>
 </body></html>
