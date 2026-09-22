@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Broke Legend — The Bankroll</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--felt:#07140c;--gold:#e8c36a;--ink:#f6f1e4;--muted:#b8b09a;--red:#c23b3b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"DM Sans",system-ui,sans-serif;background:radial-gradient(1200px 600px at 50% -10%,rgba(232,195,106,.16),transparent 55%),linear-gradient(180deg,var(--felt),#041009);color:var(--ink);min-height:100vh}
+.topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:center;flex-wrap:wrap;gap:4px;padding:12px;background:rgba(4,16,9,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,195,106,.22)}
+.topbar a,.topbar button.nav{appearance:none;border:0;background:0;color:var(--ink);font:inherit;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:10px 14px;border-radius:999px;cursor:pointer}
+.topbar a:hover,.topbar button.nav:hover,.topbar a.active{background:rgba(232,195,106,.14);color:var(--gold)}
+.wrap{display:flex;justify-content:center;padding:28px 16px 48px}
+.table{width:min(760px,100%);border:1px solid rgba(232,195,106,.28);background:linear-gradient(180deg,rgba(13,34,22,.92),rgba(7,20,12,.96));border-radius:28px;padding:36px 24px 28px}
+.eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:var(--gold);font-weight:600;text-align:center}
+h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(34px,7vw,58px);text-align:center;margin:12px 0 10px}
+h2{font-family:"Playfair Display",Georgia,serif;font-size:28px;text-align:center;margin:6px 0 8px}
+.headline,.sub{text-align:center;color:var(--muted);font-size:16px;line-height:1.5;max-width:28em;margin:0 auto 22px}
+.sub{font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+a.chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:84px;text-decoration:none;color:var(--ink);border-radius:18px;border:1px solid rgba(232,195,106,.22);background:rgba(255,255,255,.03)}
+a.chip strong{font-size:24px}a.chip span{font-size:12px;color:var(--muted)}
+a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.18),rgba(232,195,106,.16))}
+.panel{display:none}.panel.show{display:block}
+.empty{border:1px dashed rgba(232,195,106,.28);border-radius:16px;padding:28px 16px;text-align:center;color:var(--muted)}
+.deposit{display:grid;gap:12px}
+.deposit label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-align:center}
+.deposit input{width:100%;background:rgba(0,0,0,.28);border:1px solid rgba(232,195,106,.3);color:var(--ink);font:inherit;font-size:28px;font-weight:700;text-align:center;border-radius:16px;padding:14px}
+.presets{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.presets button{border:1px solid rgba(232,195,106,.28);background:0;color:var(--ink);border-radius:999px;padding:8px 12px;font:inherit;cursor:pointer}
+.cta{width:100%;border:0;border-radius:16px;padding:16px;font:inherit;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:#07140c;cursor:pointer}
+.ghost{width:100%;margin-top:8px;border:1px solid rgba(232,195,106,.28);background:0;color:var(--ink);border-radius:16px;padding:12px;font:inherit;cursor:pointer}
+.status{display:flex;justify-content:space-between;margin-bottom:18px;color:var(--muted)}.status b{color:var(--gold)}
+.hands{display:grid;gap:18px;margin-bottom:16px}
+.hand h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.cards{display:flex;flex-wrap:wrap;gap:8px;min-height:72px}
+.card{width:52px;height:74px;border-radius:8px;background:#f6f1e4;color:#1a1a1a;display:flex;flex-direction:column;justify-content:space-between;padding:6px 7px;font-weight:700}
+.card.red{color:var(--red)}.card.back{background:#7a1f1f;color:transparent}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.actions button{flex:1;min-width:90px;border:1px solid rgba(232,195,106,.3);background:rgba(255,255,255,.04);color:var(--ink);border-radius:12px;padding:12px;font:inherit;font-weight:700;cursor:pointer}
+.msg{text-align:center;margin:10px 0 14px;color:var(--gold);font-weight:600}
+.note,.foot{text-align:center;color:#8d8674;font-size:12px;margin-top:14px}
+.foot a{color:var(--gold);text-decoration:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#e8c36a;color:#07140c;font-weight:700;padding:10px 16px;border-radius:999px;opacity:0;transition:.2s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}a.chip.whale{grid-column:auto}}
+</style>
+</head>
+<body>
+<nav class="topbar">
+<a href="#donate" class="active" data-tab="donate">Donate</a>
+<a href="#play" data-tab="play">Play</a>
+<a href="#leaderboard" data-tab="leaderboard">Leaderboard</a>
+<button type="button" class="nav" id="shareBtn">Share</button>
+</nav>
+<div class="wrap"><main class="table">
+<section id="donate" class="panel show">
+<p class="eyebrow">The Bankroll</p>
+<h1>Broke Legend</h1>
+<p class="headline">Donate to a broke legend. Blackjack won’t pay for itself. 💸</p>
+<div class="grid">
+<a class="chip" href="https://whop.com/checkout/plan_VjSDuJt6qVAyN"><strong>$1</strong><span>Chip</span></a>
+<a class="chip" href="https://whop.com/checkout/plan_5QH6LReRBe40b"><strong>$5</strong><span>Stack</span></a>
+<a class="chip" href="https://whop.com/checkout/plan_m6Xf1YtxPXhsF"><strong>$10</strong><span>Hand</span></a>
+<a class="chip" href="https://whop.com/checkout/plan_VfC4056DZfXNB"><strong>$25</strong><span>Buy-in</span></a>
+<a class="chip" href="https://whop.com/checkout/plan_jsRI92G8xy2VR"><strong>$50</strong><span>Double Down</span></a>
+<a class="chip" href="https://whop.com/checkout/plan_WFMehrw9zXnEz"><strong>$100</strong><span>High Roller</span></a>
+<a class="chip whale" href="https://whop.com/checkout/plan_S5gy5AYJbMQS5"><strong>$1,000</strong><span>Whale</span></a>
+</div>
+</section>
+<section id="play" class="panel">
+<p class="eyebrow">Live table</p>
+<h2>Play Blackjack</h2>
+<p class="sub">Buy in up to $50. Cards are random. About 9 in 10 hands win if you don’t bust.</p>
+<div id="buyin"><div class="deposit">
+<label for="amount">Custom buy-in</label>
+<input id="amount" type="number" min="1" max="50" step="1" value="20" />
+<div class="presets">
+<button type="button" data-amt="5">$5</button>
+<button type="button" data-amt="10">$10</button>
+<button type="button" data-amt="20">$20</button>
+<button type="button" data-amt="25">$25</button>
+<button type="button" data-amt="50">$50</button>
+</div>
+<button class="cta" id="depositBtn" type="button">Deposit and sit down</button>
+<p class="note">Max $50. Pay on Whop, then come back to the table.</p>
+</div></div>
+<div id="game" style="display:none">
+<div class="status"><div>Stack <b id="stack">$0</b></div><div>Bet <b id="betLabel">$5</b></div></div>
+<div class="hands">
+<div class="hand"><h3>Dealer <span id="dealerTotal"></span></h3><div class="cards" id="dealerCards"></div></div>
+<div class="hand"><h3>You <span id="playerTotal"></span></h3><div class="cards" id="playerCards"></div></div>
+</div>
+<div class="msg" id="msg">Set a bet and deal.</div>
+<div class="actions" id="preActions">
+<button type="button" id="betDown">- Bet</button>
+<button type="button" id="betUp">+ Bet</button>
+<button type="button" id="dealBtn">Deal</button>
+</div>
+<div class="actions" id="playActions" style="display:none">
+<button type="button" id="hitBtn">Hit</button>
+<button type="button" id="standBtn">Stand</button>
+<button type="button" id="doubleBtn">Double</button>
+</div>
+<button class="ghost" id="addChips" type="button">Add chips</button>
+</div>
+</section>
+<section id="leaderboard" class="panel">
+<p class="eyebrow">High rollers</p>
+<h2>Leaderboard</h2>
+<p class="sub">Biggest chips on the felt. Be first.</p>
+<div class="empty">No donations yet. Drop a chip and take the top seat.</div>
+</section>
+<p class="foot">18+ table credits after a Whop buy-in. Winnings stay on this device. Powered by <a href="https://whop.com/donateforcasino-18">Whop</a>.</p>
+</main></div>
+<div class="toast" id="toast">Link copied</div>
+<script src="play.js"></script>
+</body></html>
