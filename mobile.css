@@ -1,0 +1,24 @@
+@media(max-width:640px){
+body{padding-bottom:env(safe-area-inset-bottom)}
+.topbar{grid-template-columns:1fr 40px;padding:8px 8px 8px max(6px,env(safe-area-inset-left))}
+.navlinks{justify-content:flex-start;gap:0;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.navlinks::-webkit-scrollbar{display:none}
+.topbar a,.topbar button.nav{font-size:11px;letter-spacing:.06em;padding:10px 9px;white-space:nowrap}
+.profile{width:34px;height:34px}
+.wrap{padding:16px 10px 36px}
+.table{padding:22px 14px 20px;border-radius:20px}
+h1{font-size:clamp(28px,10vw,42px);margin:8px 0}
+h2{font-size:24px}
+.headline{font-size:15px;margin-bottom:16px}
+.sub{font-size:13px;margin-bottom:16px}
+.grid{gap:8px}
+a.chip{min-height:72px;border-radius:14px}
+a.chip strong{font-size:20px}
+.status,.stats{flex-wrap:wrap;gap:8px 12px}
+.actions button{min-width:0;flex:1 1 30%;padding:14px 8px;font-size:14px}
+.card{width:46px;height:66px;padding:5px}
+.gate{padding:12px}
+.gatebox{padding:20px 16px;border-radius:18px}
+.menu{right:8px;width:min(220px,calc(100vw - 16px))}
+.toast{max-width:calc(100vw - 24px);text-align:center}
+}
