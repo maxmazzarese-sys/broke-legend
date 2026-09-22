@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Broke Legend — The Bankroll</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="games.css" />
+<link rel="stylesheet" href="mobile.css" />
 <style>
-:root{--felt:#07140c;--gold:#e8c36a;--ink:#f6f1e4;--muted:#b8b09a;--red:#c23b3b}
+:root{--felt:#07140c;--gold:#e8c36a;--ink:#f6f1e4;--muted:#b8b09a}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"DM Sans",system-ui,sans-serif;background:radial-gradient(1200px 600px at 50% -10%,rgba(232,195,106,.16),transparent 55%),linear-gradient(180deg,var(--felt),#041009);color:var(--ink);min-height:100vh}
+body{font-family:"DM Sans",system-ui,sans-serif;background:radial-gradient(1200px 600px at 50% -10%,rgba(232,195,106,.16),transparent 55%),linear-gradient(180deg,#07140c,#041009);color:var(--ink);min-height:100vh}
 .topbar{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:10px 12px 10px 8px;background:rgba(4,16,9,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,195,106,.22)}
 .navlinks{display:flex;justify-content:center;flex-wrap:wrap;gap:4px}
 .topbar a,.topbar button.nav{appearance:none;border:0;background:0;color:var(--ink);font:inherit;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:10px 12px;border-radius:999px;cursor:pointer}
@@ -18,14 +18,11 @@ body{font-family:"DM Sans",system-ui,sans-serif;background:radial-gradient(1200p
 .gate{position:fixed;inset:0;z-index:50;background:rgba(4,16,9,.86);display:flex;align-items:center;justify-content:center;padding:20px}
 .gate.hidden{display:none}
 .gatebox{width:min(420px,100%);border:1px solid rgba(232,195,106,.28);background:linear-gradient(180deg,rgba(13,34,22,.96),rgba(7,20,12,.98));border-radius:24px;padding:28px 22px}
-.gatebox h2{margin-bottom:8px}
-.gatebox .sub{margin-bottom:16px}
+.gatebox h2{margin-bottom:8px}.gatebox .sub{margin-bottom:16px}
 .gatebox input{width:100%;margin:0 0 10px;background:rgba(0,0,0,.28);border:1px solid rgba(232,195,106,.3);color:var(--ink);border-radius:14px;padding:12px;font:inherit}
 .gateErr{color:#e08a8a;text-align:center;font-size:13px;min-height:18px;margin:0 0 8px}
 .menu{position:absolute;right:12px;top:58px;width:220px;background:#0c1c14;border:1px solid rgba(232,195,106,.28);border-radius:16px;padding:14px;display:none;z-index:30}
-.menu.show{display:block}
-.menu p{color:var(--muted);font-size:13px;margin:4px 0}
-.menu b{color:var(--ink)}
+.menu.show{display:block}.menu p{color:var(--muted);font-size:13px;margin:4px 0}.menu b{color:var(--ink)}
 .wrap{display:flex;justify-content:center;padding:28px 16px 48px}
 .table{width:min(760px,100%);border:1px solid rgba(232,195,106,.28);background:linear-gradient(180deg,rgba(13,34,22,.92),rgba(7,20,12,.96));border-radius:28px;padding:36px 24px 28px}
 .eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:var(--gold);font-weight:600;text-align:center}
@@ -40,27 +37,12 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 .panel{display:none}.panel.show{display:block}
 .cta{width:100%;border:0;border-radius:16px;padding:16px;font:inherit;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:#07140c;cursor:pointer}
 .ghost{width:100%;margin-top:8px;border:1px solid rgba(232,195,106,.28);background:0;color:var(--ink);border-radius:16px;padding:12px;font:inherit;cursor:pointer}
-.status{display:flex;justify-content:space-between;margin-bottom:18px;color:var(--muted)}.status b{color:var(--gold)}
-.hands{display:grid;gap:18px;margin-bottom:16px}
-.hand h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.cards{display:flex;flex-wrap:wrap;gap:8px;min-height:76px}
-.card{width:52px;height:74px;border-radius:8px;background:#f6f1e4;color:#1a1a1a;display:flex;flex-direction:column;justify-content:space-between;padding:6px 7px;font-weight:700;box-shadow:0 8px 16px rgba(0,0,0,.28)}
-.card.red{color:var(--red)}.card.back{background:repeating-linear-gradient(135deg,#6b1515 0 8px,#8a1c1c 8px 16px);color:transparent}
-.card.deal{animation:dealIn .42s cubic-bezier(.18,.84,.32,1.08) both}
-.card.flip{animation:flipIn .38s ease both}
-@keyframes dealIn{from{opacity:0;transform:translateY(-36px) rotate(-14deg) scale(.8)}to{opacity:1;transform:translateY(0) rotate(0) scale(1)}}
-@keyframes flipIn{from{transform:rotateY(90deg) scale(.92);opacity:.4}to{transform:rotateY(0) scale(1);opacity:1}}
-.actions{display:flex;flex-wrap:wrap;gap:8px}
-.actions button{flex:1;min-width:90px;border:1px solid rgba(232,195,106,.3);background:rgba(255,255,255,.04);color:var(--ink);border-radius:12px;padding:12px;font:inherit;font-weight:700;cursor:pointer}
-.msg{text-align:center;margin:10px 0 14px;color:var(--gold);font-weight:600}
 .note,.foot{text-align:center;color:#8d8674;font-size:12px;margin-top:14px}
 .foot a{color:var(--gold);text-decoration:none}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#e8c36a;color:#07140c;font-weight:700;padding:10px 16px;border-radius:999px;opacity:0;transition:.2s}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .row{display:flex;justify-content:space-between;padding:12px 4px;border-bottom:1px solid rgba(232,195,106,.14);color:var(--muted)}
 .row b{color:var(--ink)}
-.stats{display:flex;gap:16px;justify-content:center;margin:0 0 16px;color:var(--muted);font-size:13px}
-.stats b{color:var(--gold)}
 .empty{border:1px dashed rgba(232,195,106,.28);border-radius:16px;padding:28px 16px;text-align:center;color:var(--muted)}
 @media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}a.chip.whale{grid-column:auto}}
 </style>
@@ -69,7 +51,6 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <nav class="topbar">
 <div class="navlinks">
 <a href="#donate" class="active" data-tab="donate">Donate</a>
-<a href="#play" data-tab="play">Play</a>
 <a href="#leaderboard" data-tab="leaderboard">Leaderboard</a>
 <button type="button" class="nav" id="shareBtn">Share</button>
 </div>
@@ -111,99 +92,16 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <a class="chip whale" href="https://whop.com/checkout/plan_S5gy5AYJbMQS5"><strong>$1,000</strong><span>Whale</span></a>
 </div>
 </section>
-<section id="play" class="panel">
-<p class="eyebrow">Free table</p>
-<h2>Play</h2>
-<p class="sub">Play chips only. No cash out. Pick a table, drop chips, then play.</p>
-<div class="stats"><span>Stack <b id="stack" data-stack>250 chips</b></span><span>Best <b id="best">0</b></span><span>Hot <b id="hot">0</b></span></div>
-<div class="games">
-<button type="button" class="on" data-game="bj">Blackjack</button>
-<button type="button" data-game="poker">Texas Hold'em</button>
-<button type="button" data-game="roulette">Roulette</button>
-<button type="button" data-game="crossy">Crossy Road</button>
-</div>
-<div id="bj" class="gamebox on">
-<div class="status"><div>Stack <b data-stack>250 chips</b></div></div>
-<div class="hands">
-<div class="hand"><h3>Dealer <span id="dealerTotal"></span></h3><div class="cards" id="dealerCards"></div></div>
-<div class="hand"><h3>You <span id="playerTotal"></span></h3><div class="cards" id="playerCards"></div></div>
-</div>
-<div class="msg" id="msg">Pick a chip, drop it on the circle, then deal.</div>
-<div class="chirow" id="bjChips"></div>
-<button type="button" class="betspot" id="bjSpot"><span>Bet</span><b id="betLabel">0</b></button>
-<div class="actions" id="preActions">
-<button type="button" id="bjClear">Clear</button>
-<button type="button" id="dealBtn">Deal</button>
-</div>
-<div class="actions" id="playActions" style="display:none">
-<button type="button" id="hitBtn">Hit</button>
-<button type="button" id="standBtn">Stand</button>
-<button type="button" id="doubleBtn">Double</button>
-</div>
-<button class="ghost" id="refill" type="button">Free refill</button>
-<button class="cta" id="toDonate" type="button" style="margin-top:10px">Tip the legend</button>
-<p class="note">Felt credits have no cash value. Donations are tips, not bets.</p>
-</div>
-<div id="roulette" class="gamebox">
-<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>On table <b id="rOn">0</b></div></div>
-<div class="bowl">
-<div class="wheelspin" id="wheelSpin"><div class="wheelface" id="wheelFace"></div></div>
-<div class="balltrack" id="ballTrack"><i class="ball"></i></div>
-<div class="pin"></div>
-</div>
-<div class="msg" id="rMsg">Pick a chip, drop it on a number.</div>
-<div class="rchips" id="rChips"></div>
-<div class="rtable" id="rTable"></div>
-<div class="actions">
-<button type="button" id="rClear">Clear</button>
-<button type="button" id="rSpin">Spin</button>
-</div>
-</div>
-<div id="poker" class="gamebox">
-<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Pot <b id="pPot">0</b></div></div>
-<div class="hand"><h3>Board</h3></div>
-<div class="street" id="pBoard"></div>
-<div class="hand"><h3>You <span id="pYouRank"></span></h3></div>
-<div class="street" id="pYou"></div>
-<div class="hand"><h3>House <span id="pHouseRank"></span></h3></div>
-<div class="street" id="pHouse"></div>
-<div class="msg" id="pMsg">Pick a chip, drop it as the ante, then deal.</div>
-<div class="chirow" id="pChips"></div>
-<button type="button" class="betspot" id="pSpot"><span>Ante</span><b id="pAnte">0</b></button>
-<div class="actions">
-<button type="button" id="pClear">Clear</button>
-<button type="button" id="pDeal">Deal</button>
-<button type="button" id="pFold">Fold</button>
-<button type="button" id="pCall">Call</button>
-<button type="button" id="pRaise">Raise</button>
-</div>
-</div>
-<div id="crossy" class="gamebox">
-<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Run <b id="cScore">0</b></div></div>
-<div class="roadwrap"><canvas id="crossyCanvas" width="320" height="420"></canvas></div>
-<div class="msg" id="cMsg">Pick a chip, drop it on the run, then hop.</div>
-<div class="chirow" id="cChips"></div>
-<button type="button" class="betspot" id="cSpot"><span>Run</span><b id="cBetLbl">0</b></button>
-<div class="actions">
-<button type="button" id="cClear">Clear</button>
-<button type="button" id="cStart">Start run</button>
-<button type="button" id="cUp">Hop</button>
-</div>
-</div>
-</section>
 <section id="leaderboard" class="panel">
 <p class="eyebrow">The board</p>
 <h2>Leaderboard</h2>
 <p class="sub">Whales who tipped. One name, one seat.</p>
 <div id="boardDonors"></div>
 </section>
-<p class="foot">Free play. Donations support the creator. 18+. Powered by <a href="https://whop.com/donateforcasino-18">Whop</a>.</p>
+<p class="foot">Donations support the creator. 18+. Powered by <a href="https://whop.com/donateforcasino-18">Whop</a>.</p>
 </main></div>
 <div class="toast" id="toast">Link copied</div>
 <script src="auth.js"></script>
-<script src="chips.js"></script>
-<script src="play.js"></script>
-<script src="games.js"></script>
-<script src="tables.js"></script>
+<script src="site.js"></script>
 </body>
 </html>
