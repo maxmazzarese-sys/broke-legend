@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Broke Legend — The Bankroll</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="games.css" />
@@ -114,7 +114,7 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <section id="play" class="panel">
 <p class="eyebrow">Free table</p>
 <h2>Play</h2>
-<p class="sub">Play chips only. No cash out. Pick a table.</p>
+<p class="sub">Play chips only. No cash out. Pick a table, drop chips, then play.</p>
 <div class="stats"><span>Stack <b id="stack" data-stack>250 chips</b></span><span>Best <b id="best">0</b></span><span>Hot <b id="hot">0</b></span></div>
 <div class="games">
 <button type="button" class="on" data-game="bj">Blackjack</button>
@@ -123,15 +123,16 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <button type="button" data-game="crossy">Crossy Road</button>
 </div>
 <div id="bj" class="gamebox on">
-<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Bet <b id="betLabel">10</b></div></div>
+<div class="status"><div>Stack <b data-stack>250 chips</b></div></div>
 <div class="hands">
 <div class="hand"><h3>Dealer <span id="dealerTotal"></span></h3><div class="cards" id="dealerCards"></div></div>
 <div class="hand"><h3>You <span id="playerTotal"></span></h3><div class="cards" id="playerCards"></div></div>
 </div>
-<div class="msg" id="msg">Set a bet and deal.</div>
+<div class="msg" id="msg">Pick a chip, drop it on the circle, then deal.</div>
+<div class="chirow" id="bjChips"></div>
+<button type="button" class="betspot" id="bjSpot"><span>Bet</span><b id="betLabel">0</b></button>
 <div class="actions" id="preActions">
-<button type="button" id="betDown">- Bet</button>
-<button type="button" id="betUp">+ Bet</button>
+<button type="button" id="bjClear">Clear</button>
 <button type="button" id="dealBtn">Deal</button>
 </div>
 <div class="actions" id="playActions" style="display:none">
@@ -166,21 +167,25 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <div class="street" id="pYou"></div>
 <div class="hand"><h3>House <span id="pHouseRank"></span></h3></div>
 <div class="street" id="pHouse"></div>
-<div class="msg" id="pMsg">Ante up and deal.</div>
+<div class="msg" id="pMsg">Pick a chip, drop it as the ante, then deal.</div>
+<div class="chirow" id="pChips"></div>
+<button type="button" class="betspot" id="pSpot"><span>Ante</span><b id="pAnte">0</b></button>
 <div class="actions">
-<button type="button" id="pDeal">Deal 10</button>
+<button type="button" id="pClear">Clear</button>
+<button type="button" id="pDeal">Deal</button>
 <button type="button" id="pFold">Fold</button>
 <button type="button" id="pCall">Call</button>
 <button type="button" id="pRaise">Raise</button>
 </div>
 </div>
 <div id="crossy" class="gamebox">
-<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Bet <b id="cBetLbl">10</b></div><div>Run <b id="cScore">0</b></div></div>
+<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Run <b id="cScore">0</b></div></div>
 <div class="roadwrap"><canvas id="crossyCanvas" width="320" height="420"></canvas></div>
-<div class="msg" id="cMsg">Bet chips, then run the road.</div>
+<div class="msg" id="cMsg">Pick a chip, drop it on the run, then hop.</div>
+<div class="chirow" id="cChips"></div>
+<button type="button" class="betspot" id="cSpot"><span>Run</span><b id="cBetLbl">0</b></button>
 <div class="actions">
-<button type="button" id="cDown">- Bet</button>
-<button type="button" id="cPlus">+ Bet</button>
+<button type="button" id="cClear">Clear</button>
 <button type="button" id="cStart">Start run</button>
 <button type="button" id="cUp">Hop</button>
 </div>
@@ -196,7 +201,9 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 </main></div>
 <div class="toast" id="toast">Link copied</div>
 <script src="auth.js"></script>
+<script src="chips.js"></script>
 <script src="play.js"></script>
 <script src="games.js"></script>
+<script src="tables.js"></script>
 </body>
 </html>
