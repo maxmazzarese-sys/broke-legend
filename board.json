@@ -1,1 +1,6 @@
-{"players":[],"donors":[]}
+{
+  "donors": [
+    {"name": "Alexander F.", "amt": 1}
+  ],
+  "players": []
+}
