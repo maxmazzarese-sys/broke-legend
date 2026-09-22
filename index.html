@@ -175,10 +175,12 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 </div>
 </div>
 <div id="crossy" class="gamebox">
-<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Run <b id="cScore">0</b></div></div>
+<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Bet <b id="cBetLbl">10</b></div><div>Run <b id="cScore">0</b></div></div>
 <div class="roadwrap"><canvas id="crossyCanvas" width="320" height="420"></canvas></div>
-<div class="msg" id="cMsg">5 chips a run. Cross the lanes.</div>
+<div class="msg" id="cMsg">Bet chips, then run the road.</div>
 <div class="actions">
+<button type="button" id="cDown">- Bet</button>
+<button type="button" id="cPlus">+ Bet</button>
 <button type="button" id="cStart">Start run</button>
 <button type="button" id="cUp">Hop</button>
 </div>
