@@ -6,18 +6,47 @@ document.querySelectorAll("[data-game]").forEach(btn=>btn.onclick=()=>{
   if(btn.dataset.game!=="crossy")stopCrossy();
 });
 const RED=new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
-let rBet=10,rPick="red",rBusy=false;
-document.querySelectorAll("[data-color]").forEach(b=>b.onclick=()=>{rPick=b.dataset.color;document.querySelectorAll("[data-color]").forEach(x=>x.classList.toggle("on",x===b));});
-document.querySelector('[data-color="red"]').classList.add("on");
-document.getElementById("rDown").onclick=()=>{if(rBusy)return;rBet=Math.max(5,rBet-5);document.getElementById("rBetLbl").textContent=rBet;};
-document.getElementById("rUp").onclick=()=>{if(rBusy)return;rBet=Math.min(50,bank(),rBet+5);document.getElementById("rBetLbl").textContent=rBet;};
+const WHEEL=[0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
+function rColor(n){return n===0?"green":(RED.has(n)?"red":"black");}
+const face=document.getElementById("wheelFace");
+if(face&&!face.childElementCount){WHEEL.forEach((n,i)=>{const d=document.createElement("div");d.className="pocket "+rColor(n);d.style.transform="rotate("+((i+0.5)*(360/37))+"deg)";d.textContent=n;face.appendChild(d);});}
+const CHIPS=[1,5,10,25,100], CHIPHEX=["#f6f1e4","#c23b3b","#3b6ec2","#2f7a3a","#1a1a1a"];
+let rChip=5, rBets={}, rBusy=false;
+const chipBar=document.getElementById("rChips");
+if(chipBar&&!chipBar.childElementCount){CHIPS.forEach((v,i)=>{const b=document.createElement("button");b.type="button";b.textContent=v;b.style.background=CHIPHEX[i];if(v===100)b.style.color="#f6f1e4";if(v===5)b.classList.add("on");b.onclick=()=>{rChip=v;[...chipBar.children].forEach(x=>x.classList.toggle("on",x===b));};chipBar.appendChild(b);});}
+const table=document.getElementById("rTable");
+function rTotal(){return Object.values(rBets).reduce((a,b)=>a+b,0);}
+function paintBets(){document.getElementById("rOn").textContent=rTotal();table.querySelectorAll(".rcell").forEach(cell=>{const k=cell.dataset.bet;let m=cell.querySelector(".marker");if(rBets[k]){if(!m){m=document.createElement("span");m.className="marker";cell.appendChild(m);}m.textContent=rBets[k];}else if(m)m.remove();});}
+function drop(k){if(rBusy)return;if(bank()<rChip)return toast("Not enough chips");setBank(bank()-rChip);rBets[k]=(rBets[k]||0)+rChip;paintBets();document.getElementById("rMsg").textContent="On the felt: "+rTotal();}
+if(table&&!table.childElementCount){
+  const z=document.createElement("button");z.className="rcell green rzero";z.dataset.bet="n0";z.textContent="0";z.onclick=()=>drop("n0");table.appendChild(z);
+  for(let col=0;col<12;col++)for(let row=0;row<3;row++){
+    const n=col*3+(3-row);
+    const b=document.createElement("button");b.className="rcell "+rColor(n);b.dataset.bet="n"+n;b.textContent=n;b.style.gridColumn=String(col+2);b.style.gridRow=String(row+1);b.onclick=()=>drop("n"+n);table.appendChild(b);
+  }
+  const red=document.createElement("button");red.className="rcell red out rout";red.dataset.bet="red";red.textContent="Red 2x";red.onclick=()=>drop("red");table.appendChild(red);
+  const blk=document.createElement("button");blk.className="rcell black out rout2";blk.dataset.bet="black";blk.textContent="Black 2x";blk.onclick=()=>drop("black");table.appendChild(blk);
+}
+document.getElementById("rClear").onclick=()=>{if(rBusy)return;const back=rTotal();if(!back)return;setBank(bank()+back);rBets={};paintBets();document.getElementById("rMsg").textContent="Bets pulled.";};
 document.getElementById("rSpin").onclick=()=>{
-  if(rBusy)return;if(bank()<rBet)return toast("Not enough chips");
-  rBusy=true;setBank(bank()-rBet);
-  const n=Math.floor(Math.random()*37), color=n===0?"green":(RED.has(n)?"red":"black");
-  document.getElementById("wheel").style.transform="rotate("+(720+n*9.73+Math.random()*6)+"deg)";
-  document.getElementById("rMsg").textContent="Spinning...";
-  setTimeout(()=>{let pay=0;if(color===rPick)pay=rPick==="green"?rBet*36:rBet*2;if(pay)setBank(bank()+pay);document.getElementById("rMsg").textContent=n+" "+color+(pay?"  +"+pay:"  -"+rBet);rBusy=false;},2200);
+  if(rBusy)return;if(!rTotal())return toast("Put a chip on the table");
+  rBusy=true;
+  const hit=WHEEL[Math.floor(Math.random()*WHEEL.length)], idx=WHEEL.indexOf(hit);
+  const wheel=document.getElementById("wheelSpin"), ball=document.getElementById("ballTrack");
+  wheel.style.transition="none";ball.style.transition="none";
+  wheel.style.transform="rotate(0deg)";ball.style.transform="rotate(0deg)";void wheel.offsetWidth;
+  wheel.style.transition="transform 3.4s cubic-bezier(.12,.7,0,1)";
+  ball.style.transition="transform 3.4s cubic-bezier(.05,.2,.15,1)";
+  wheel.style.transform="rotate("+(1080+(360-idx*(360/37)))+"deg)";
+  ball.style.transform="rotate(-1440deg)";
+  document.getElementById("rMsg").textContent="Ball's out.";
+  setTimeout(()=>{
+    const color=rColor(hit);let pay=0;
+    Object.entries(rBets).forEach(([k,amt])=>{if(k==="n"+hit)pay+=amt*36;else if(k===color&&color!=="green")pay+=amt*2;});
+    if(pay)setBank(bank()+pay);
+    document.getElementById("rMsg").textContent=hit+" "+color+(pay?"  +"+pay:"  lost "+rTotal());
+    rBets={};paintBets();rBusy=false;
+  },3450);
 };
 const PR=["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
 function pDeck(){const d=[];for(const s of S)for(const r of PR)d.push({r,s});for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}return d;}
@@ -68,12 +97,7 @@ function nextStreet(){
   }
   paintPokerCards();
 }
-document.getElementById("pDeal").onclick=()=>{
-  if(pState&&pState.live)return;if(bank()<10)return toast("Need 10 chips");
-  setBank(bank()-10);const d=pDeck();
-  pState={deck:d,you:[d.pop(),d.pop()],house:[d.pop(),d.pop()],board:[d.pop(),d.pop(),d.pop()],pot:20,live:true,reveal:false,street:0};
-  paintPokerCards();document.getElementById("pMsg").textContent="Flop is out. Call 10 or raise.";
-};
+document.getElementById("pDeal").onclick=()=>{if(pState&&pState.live)return;if(bank()<10)return toast("Need 10 chips");setBank(bank()-10);const d=pDeck();pState={deck:d,you:[d.pop(),d.pop()],house:[d.pop(),d.pop()],board:[d.pop(),d.pop(),d.pop()],pot:20,live:true,reveal:false,street:0};paintPokerCards();document.getElementById("pMsg").textContent="Flop is out. Call 10 or raise.";};
 document.getElementById("pFold").onclick=()=>{if(!pState||!pState.live)return;pokerOver("Fold. House takes the pot.");};
 document.getElementById("pCall").onclick=()=>{if(!pState||!pState.live)return;if(bank()<10)return toast("Need 10 chips");setBank(bank()-10);pState.pot+=20;nextStreet();};
 document.getElementById("pRaise").onclick=()=>{if(!pState||!pState.live)return;if(bank()<20)return toast("Need 20 chips");setBank(bank()-20);pState.pot+=30;nextStreet();};
@@ -83,32 +107,16 @@ function startCrossy(){
   if(cRun&&cRun.live)return;if(bank()<5)return toast("Need 5 chips");
   setBank(bank()-5);
   const canvas=document.getElementById("crossyCanvas"), ctx=canvas.getContext("2d");
-  const lanes=12,w=canvas.width,h=canvas.height,lh=h/lanes;
-  const cars=[];
-  for(let i=2;i<lanes-1;i++)if(i%2){
-    const dir=i%4===1?1:-1;
-    cars.push({y:i,x:dir>0?-40:w+40,dir,spd:1.2+Math.random()*1.6,len:28+Math.random()*18});
-  }
-  cRun={live:true,x:4,y:lanes-1,score:0,cars};
-  document.getElementById("cMsg").textContent="Hop up. Don't eat bumper.";
+  const lanes=12,w=canvas.width,h=canvas.height,lh=h/lanes;const cars=[];
+  for(let i=2;i<lanes-1;i++)if(i%2){const dir=i%4===1?1:-1;cars.push({y:i,x:dir>0?-40:w+40,dir,spd:1.2+Math.random()*1.6,len:28+Math.random()*18});}
+  cRun={live:true,x:4,y:lanes-1,score:0,cars};document.getElementById("cMsg").textContent="Hop up. Don't eat bumper.";
   const tick=()=>{
     if(!cRun||!cRun.live)return;
     ctx.fillStyle="#0b1a12";ctx.fillRect(0,0,w,h);
-    for(let i=0;i<lanes;i++){
-      ctx.fillStyle=(i>1&&i<lanes-1&&i%2)?"#2a2a2a":(i%2?"#163222":"#102418");
-      ctx.fillRect(0,i*lh,w,lh);
-    }
-    cRun.cars.forEach(car=>{
-      car.x+=car.dir*car.spd;
-      if(car.dir>0&&car.x>w+50)car.x=-50;
-      if(car.dir<0&&car.x<-50)car.x=w+50;
-      ctx.fillStyle="#c23b3b";ctx.fillRect(car.x,car.y*lh+6,car.len,lh-12);
-      const px=cRun.x*(w/9);
-      if(cRun.y===car.y&&px+14>car.x&&px<car.x+car.len){cRun.live=false;document.getElementById("cMsg").textContent="Splat. Run over for "+cRun.score+".";}
-    });
+    for(let i=0;i<lanes;i++){ctx.fillStyle=(i>1&&i<lanes-1&&i%2)?"#2a2a2a":(i%2?"#163222":"#102418");ctx.fillRect(0,i*lh,w,lh);}
+    cRun.cars.forEach(car=>{car.x+=car.dir*car.spd;if(car.dir>0&&car.x>w+50)car.x=-50;if(car.dir<0&&car.x<-50)car.x=w+50;ctx.fillStyle="#c23b3b";ctx.fillRect(car.x,car.y*lh+6,car.len,lh-12);const px=cRun.x*(w/9);if(cRun.y===car.y&&px+14>car.x&&px<car.x+car.len){cRun.live=false;document.getElementById("cMsg").textContent="Splat. Run over for "+cRun.score+".";}});
     ctx.fillStyle="#e8c36a";ctx.fillRect(cRun.x*(w/9)+4,cRun.y*lh+8,18,lh-16);
-    document.getElementById("cScore").textContent=cRun.score;
-    if(cRun.live)cAnim=requestAnimationFrame(tick);
+    document.getElementById("cScore").textContent=cRun.score;if(cRun.live)cAnim=requestAnimationFrame(tick);
   };
   stopCrossy();cAnim=requestAnimationFrame(tick);
 }
