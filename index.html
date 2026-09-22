@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Broke Legend — The Bankroll</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="games.css" />
 <style>
 :root{--felt:#07140c;--gold:#e8c36a;--ink:#f6f1e4;--muted:#b8b09a;--red:#c23b3b}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -112,11 +113,17 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 </section>
 <section id="play" class="panel">
 <p class="eyebrow">Free table</p>
-<h2>Play Blackjack</h2>
-<p class="sub">Play chips only. No buy-in. No cash out. Roast the dealer, then tip the legend if you want.</p>
-<div class="stats"><span>Best <b id="best">0</b></span><span>Hot <b id="hot">0</b></span></div>
-<div id="game">
-<div class="status"><div>Stack <b id="stack">250 chips</b></div><div>Bet <b id="betLabel">10</b></div></div>
+<h2>Play</h2>
+<p class="sub">Play chips only. No cash out. Pick a table.</p>
+<div class="stats"><span>Stack <b data-stack>250 chips</b></span><span>Best <b id="best">0</b></span><span>Hot <b id="hot">0</b></span></div>
+<div class="games">
+<button type="button" class="on" data-game="bj">Blackjack</button>
+<button type="button" data-game="roulette">Roulette</button>
+<button type="button" data-game="poker">Texas Hold'em</button>
+<button type="button" data-game="crossy">Crossy Road</button>
+</div>
+<div id="bj" class="gamebox on">
+<div class="status"><div>Stack <b id="stack" data-stack>250 chips</b></div><div>Bet <b id="betLabel">10</b></div></div>
 <div class="hands">
 <div class="hand"><h3>Dealer <span id="dealerTotal"></span></h3><div class="cards" id="dealerCards"></div></div>
 <div class="hand"><h3>You <span id="playerTotal"></span></h3><div class="cards" id="playerCards"></div></div>
@@ -136,6 +143,45 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <button class="cta" id="toDonate" type="button" style="margin-top:10px">Tip the legend</button>
 <p class="note">Felt credits have no cash value. Donations are tips, not bets.</p>
 </div>
+<div id="roulette" class="gamebox">
+<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Bet <b id="rBetLbl">10</b></div></div>
+<div class="wheelwrap"><div class="pin"></div><div class="wheel" id="wheel"></div><div class="msg" id="rMsg">Pick red, black, or green.</div></div>
+<div class="pick">
+<button type="button" data-color="red">Red 2x</button>
+<button type="button" data-color="black">Black 2x</button>
+<button type="button" data-color="green">Green 36x</button>
+</div>
+<div class="actions">
+<button type="button" id="rDown">- Bet</button>
+<button type="button" id="rUp">+ Bet</button>
+<button type="button" id="rSpin">Spin</button>
+</div>
+</div>
+<div id="poker" class="gamebox">
+<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Pot <b id="pPot">0</b></div></div>
+<div class="hand"><h3>Board</h3></div>
+<div class="street" id="pBoard"></div>
+<div class="hand"><h3>You <span id="pYouRank"></span></h3></div>
+<div class="street" id="pYou"></div>
+<div class="hand"><h3>House <span id="pHouseRank"></span></h3></div>
+<div class="street" id="pHouse"></div>
+<div class="msg" id="pMsg">Ante up and deal.</div>
+<div class="actions">
+<button type="button" id="pDeal">Deal 10</button>
+<button type="button" id="pFold">Fold</button>
+<button type="button" id="pCall">Call</button>
+<button type="button" id="pRaise">Raise</button>
+</div>
+</div>
+<div id="crossy" class="gamebox">
+<div class="status"><div>Stack <b data-stack>250 chips</b></div><div>Run <b id="cScore">0</b></div></div>
+<div class="roadwrap"><canvas id="crossyCanvas" width="320" height="420"></canvas></div>
+<div class="msg" id="cMsg">5 chips a run. Cross the lanes.</div>
+<div class="actions">
+<button type="button" id="cStart">Start run</button>
+<button type="button" id="cUp">Hop</button>
+</div>
+</div>
 </section>
 <section id="leaderboard" class="panel">
 <p class="eyebrow">The board</p>
@@ -148,4 +194,5 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <div class="toast" id="toast">Link copied</div>
 <script src="auth.js"></script>
 <script src="play.js"></script>
+<script src="games.js"></script>
 </body></html>
