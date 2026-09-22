@@ -10,7 +10,7 @@ window.stake=10;
 function takeBet(){const s=Math.min(Math.max(1,window.stake||10),bank());if(bank()<s){toast("Need chips");return 0;}setBank(bank()-s);return s;}
 function pay(n){setBank(bank()+Math.max(0,Math.round(n)));}
 const GAMES=[{id:"dice",name:"DICE",cls:"g-dice"},{id:"mines",name:"MINES",cls:"g-mines"},{id:"keno",name:"KENO",cls:"g-keno"},{id:"limbo",name:"LIMBO",cls:"g-limbo"},{id:"plinko",name:"PLINKO",cls:"g-plinko"},{id:"crash",name:"CRASH",cls:"g-crash"},{id:"wheel",name:"WHEEL",cls:"g-wheel"},{id:"coin",name:"COINFLIP",cls:"g-coin"},{id:"bj",name:"BLACKJACK",cls:"g-bj"},{id:"roulette",name:"ROULETTE",cls:"g-roulette"},{id:"poker",name:"HOLD EM",cls:"g-poker"}];
-function paintGrid(q=""){const box=document.getElementById("gameGrid");const list=GAMES.filter(g=>g.name.toLowerCase().includes(q.toLowerCase()));box.innerHTML=list.map(g=>'<button class="game '+g.cls+'" data-open="'+g.id+'"><i>PLAY</i><span>'+g.name+'</span></button>').join("");box.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openGame(b.dataset.open));}
+function paintGrid(q=""){const box=document.getElementById("gameGrid");const list=GAMES.filter(g=>g.name.toLowerCase().includes(q.toLowerCase()));const art={dice:"\uD83C\uDFB2",mines:"\uD83D\uDCA3",keno:"\uD83D\uDD22",limbo:"\uD83D\uDE80",plinko:"\uD83D\uDFE3",crash:"\uD83D\uDCC8",wheel:"\uD83C\uDFA1",coin:"\uD83E\uDE99",bj:"\uD83C\uDFB4",roulette:"\uD83D\uDD34",poker:"\u2660\uFE0F"};box.innerHTML=list.map(g=>'<button class="game '+g.cls+'" data-open="'+g.id+'"><div class="rib">LEGEND</div><div class="art">'+(art[g.id]||"*")+'</div><span>'+g.name+'</span></button>').join("");box.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openGame(b.dataset.open));}
 function showLobby(){document.getElementById("lobbyView").hidden=false;document.getElementById("gameView").hidden=true;}
 function openGame(id){document.getElementById("lobbyView").hidden=true;document.getElementById("gameView").hidden=false;if(window.mountGame)window.mountGame(id);}
 document.getElementById("backLobby").onclick=showLobby;
@@ -28,3 +28,5 @@ paintGrid();
 loadPublicBoard().then(paintBoard);
 const startTab=(location.hash||"#play").replace("#","");
 show(["donate","play","leaderboard"].includes(startTab)?startTab:"play");
+document.getElementById("loginTop").onclick=()=>window.openAuth&&openAuth("login");
+document.getElementById("registerTop").onclick=()=>window.openAuth&&openAuth("signup");
