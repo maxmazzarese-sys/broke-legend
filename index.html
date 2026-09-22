@@ -45,6 +45,10 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 .foot a{color:var(--gold);text-decoration:none}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#e8c36a;color:#07140c;font-weight:700;padding:10px 16px;border-radius:999px;opacity:0;transition:.2s}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.row{display:flex;justify-content:space-between;padding:12px 4px;border-bottom:1px solid rgba(232,195,106,.14);color:var(--muted)}
+.row b{color:var(--ink)}
+.stats{display:flex;gap:16px;justify-content:center;margin:0 0 16px;color:var(--muted);font-size:13px}
+.stats b{color:var(--gold)}
 @media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}a.chip.whale{grid-column:auto}}
 </style>
 </head>
@@ -71,25 +75,12 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 </div>
 </section>
 <section id="play" class="panel">
-<p class="eyebrow">Live table</p>
+<p class="eyebrow">Free table</p>
 <h2>Play Blackjack</h2>
-<p class="sub">Buy in up to $50. Hit, stand, or double. Cash out anytime.</p>
-<div id="buyin"><div class="deposit">
-<label for="amount">Custom buy-in</label>
-<input id="amount" type="number" min="1" max="50" step="1" value="20" />
-<div class="presets">
-<button type="button" data-amt="5">$5</button>
-<button type="button" data-amt="10">$10</button>
-<button type="button" data-amt="20">$20</button>
-<button type="button" data-amt="25">$25</button>
-<button type="button" data-amt="50">$50</button>
-</div>
-<button class="cta" id="depositBtn" type="button">Deposit and sit down</button>
-<p class="note">Max $50. Pay on Whop, then come back to the table.</p>
-<p class="note">Players win 1% of hands.</p>
-</div></div>
-<div id="game" style="display:none">
-<div class="status"><div>Stack <b id="stack">$0</b></div><div>Bet <b id="betLabel">$5</b></div></div>
+<p class="sub">Play chips only. No buy-in. No cash out. Roast the dealer, then tip the legend if you want.</p>
+<div class="stats"><span>Best <b id="best">0</b></span><span>Hot <b id="hot">0</b></span></div>
+<div id="game">
+<div class="status"><div>Stack <b id="stack">250 chips</b></div><div>Bet <b id="betLabel">10</b></div></div>
 <div class="hands">
 <div class="hand"><h3>Dealer <span id="dealerTotal"></span></h3><div class="cards" id="dealerCards"></div></div>
 <div class="hand"><h3>You <span id="playerTotal"></span></h3><div class="cards" id="playerCards"></div></div>
@@ -105,23 +96,18 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <button type="button" id="standBtn">Stand</button>
 <button type="button" id="doubleBtn">Double</button>
 </div>
-<button class="ghost" id="addChips" type="button">Add chips</button>
-<div id="withdrawBox" class="deposit" style="margin-top:16px">
-<label for="wdAmt">Cashier</label>
-<input id="wdAmt" type="number" min="1" step="1" placeholder="Amount" />
-<input id="wdHandle" type="text" placeholder="PayPal, Cash App, or Venmo" style="font-size:16px" />
-<button class="cta" id="wdBtn" type="button">Cash out</button>
-<p class="note" id="wdNote">Instant cash out to the account you enter.</p>
-</div>
+<button class="ghost" id="refill" type="button">Free refill</button>
+<button class="cta" id="toDonate" type="button" style="margin-top:10px">Tip the legend</button>
+<p class="note">Felt credits have no cash value. Donations are tips, not bets.</p>
 </div>
 </section>
 <section id="leaderboard" class="panel">
-<p class="eyebrow">High rollers</p>
+<p class="eyebrow">This device</p>
 <h2>Leaderboard</h2>
-<p class="sub">Biggest chips on the felt. Be first.</p>
-<div class="empty">No donations yet. Drop a chip and take the top seat.</div>
+<p class="sub">Your play-chip score. Fake money. Real ego.</p>
+<div id="boardList" class="empty">Sit down and deal.</div>
 </section>
-<p class="foot">18+. Powered by <a href="https://whop.com/donateforcasino-18">Whop</a>.</p>
+<p class="foot">Free play. Donations support the creator. 18+. Powered by <a href="https://whop.com/donateforcasino-18">Whop</a>.</p>
 </main></div>
 <div class="toast" id="toast">Link copied</div>
 <script src="play.js"></script>
