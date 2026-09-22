@@ -3,12 +3,12 @@
   const pChips=document.getElementById("pChips"), pSpot=document.getElementById("pSpot"), pAnteEl=document.getElementById("pAnte");
   if(pChips)paintChipBar(pChips,pPick);
   function paintAnte(){if(pAnteEl)pAnteEl.textContent=pAnte;}
-  if(pSpot)pSpot.onclick=()=>{if(pState&&pState.live)return;dropChip(()=>pAnte,n=>{pAnte=n;paintAnte();},pPick.val,()=>pState&&pState.live);};
+  if(pSpot)pSpot.onclick=()=>{if(typeof pState!=="undefined"&&pState&&pState.live)return;dropChip(()=>pAnte,n=>{pAnte=n;paintAnte();},pPick.val,()=>typeof pState!=="undefined"&&pState&&pState.live);};
   const pClear=document.getElementById("pClear");
-  if(pClear)pClear.onclick=()=>{if(pState&&pState.live)return;pullChips(()=>pAnte,n=>{pAnte=n;paintAnte();},()=>pState&&pState.live);};
+  if(pClear)pClear.onclick=()=>{if(typeof pState!=="undefined"&&pState&&pState.live)return;pullChips(()=>pAnte,n=>{pAnte=n;paintAnte();},()=>typeof pState!=="undefined"&&pState&&pState.live);};
   const pDeal=document.getElementById("pDeal");
   if(pDeal)pDeal.onclick=()=>{
-    if(pState&&pState.live)return;
+    if(typeof pState!=="undefined"&&pState&&pState.live)return;
     if(pAnte<1)return toast("Drop an ante first");
     const unit=pAnte;pAnte=0;paintAnte();
     const d=pDeck();
@@ -18,7 +18,7 @@
   };
   const pCall=document.getElementById("pCall");
   if(pCall)pCall.onclick=()=>{
-    if(!pState||!pState.live)return;
+    if(typeof pState==="undefined"||!pState||!pState.live)return;
     const unit=pPick.val;
     if(bank()<unit)return toast("Need chips");
     setBank(bank()-unit);pState.pot+=unit*2;
@@ -37,7 +37,7 @@
   };
   const pRaise=document.getElementById("pRaise");
   if(pRaise)pRaise.onclick=()=>{
-    if(!pState||!pState.live)return;
+    if(typeof pState==="undefined"||!pState||!pState.live)return;
     const unit=pPick.val*2;
     if(bank()<unit)return toast("Need chips to raise");
     setBank(bank()-unit);pState.pot+=unit+pPick.val;
@@ -47,9 +47,9 @@
   const cPick={val:5};
   paintChipBar(document.getElementById("cChips"),cPick);
   const cSpot=document.getElementById("cSpot");
-  if(cSpot)cSpot.onclick=()=>{if(cRun&&cRun.live)return;dropChip(()=>cBet,n=>{cBet=n;paintCBet();},cPick.val,()=>cRun&&cRun.live);};
+  if(cSpot)cSpot.onclick=()=>{if(typeof cRun!=="undefined"&&cRun&&cRun.live)return;dropChip(()=>cBet,n=>{cBet=n;paintCBet();},cPick.val,()=>typeof cRun!=="undefined"&&cRun&&cRun.live);};
   const cClear=document.getElementById("cClear");
-  if(cClear)cClear.onclick=()=>{if(cRun&&cRun.live)return;pullChips(()=>cBet,n=>{cBet=n;paintCBet();},()=>cRun&&cRun.live);};
+  if(cClear)cClear.onclick=()=>{if(typeof cRun!=="undefined"&&cRun&&cRun.live)return;pullChips(()=>cBet,n=>{cBet=n;paintCBet();},()=>typeof cRun!=="undefined"&&cRun&&cRun.live);};
   if(typeof startCrossy==="function"){
     const orig=startCrossy;
     startCrossy=function(){
@@ -59,5 +59,4 @@
     const go=document.getElementById("cStart");
     if(go)go.onclick=startCrossy;
   }
-  if(typeof cBet==="number"){cBet=0;if(typeof paintCBet==="function")paintCBet();}
 })();
