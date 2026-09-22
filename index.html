@@ -61,12 +61,6 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 .row b{color:var(--ink)}
 .stats{display:flex;gap:16px;justify-content:center;margin:0 0 16px;color:var(--muted);font-size:13px}
 .stats b{color:var(--gold)}
-.pills{display:flex;gap:8px;justify-content:center;margin:0 0 18px}
-.pills button{border:1px solid rgba(232,195,106,.28);background:0;color:var(--ink);border-radius:999px;padding:8px 14px;font:inherit;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
-.pills button.on{background:rgba(232,195,106,.16);color:var(--gold);border-color:rgba(232,195,106,.45)}
-.namebox{display:flex;gap:8px;margin:12px 0 4px}
-.namebox input{flex:1;background:rgba(0,0,0,.28);border:1px solid rgba(232,195,106,.3);color:var(--ink);border-radius:12px;padding:10px 12px;font:inherit}
-.namebox button{border:0;border-radius:12px;padding:10px 14px;background:var(--gold);color:#07140c;font:inherit;font-weight:700;cursor:pointer}
 @media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}a.chip.whale{grid-column:auto}}
 </style>
 </head>
@@ -146,13 +140,8 @@ a.chip.whale{grid-column:1/-1;background:linear-gradient(90deg,rgba(194,59,59,.1
 <section id="leaderboard" class="panel">
 <p class="eyebrow">The board</p>
 <h2>Leaderboard</h2>
-<p class="sub">Whales who tipped. Legends who ran the felt.</p>
-<div class="pills">
-<button type="button" class="on" data-board="donators">Donators</button>
-<button type="button" data-board="players">Best players</button>
-</div>
+<p class="sub">Whales who tipped. One name, one seat.</p>
 <div id="boardDonors"></div>
-<div id="boardPlayers" style="display:none"></div>
 </section>
 <p class="foot">Free play. Donations support the creator. 18+. Powered by <a href="https://whop.com/donateforcasino-18">Whop</a>.</p>
 </main></div>
