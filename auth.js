@@ -12,7 +12,7 @@ function normUser(s){return String(s||"").trim().replace(/^@/,"").toLowerCase();
 function validUser(s){return /^[a-z0-9_]{3,16}$/.test(s);}
 async function digest(text){const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(text));return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");}
 function salt(){const a=new Uint8Array(8);crypto.getRandomValues(a);return [...a].map(b=>b.toString(16).padStart(2,"0")).join("");}
-function paintProfile(){const s=session();profileBtn.textContent=s?s.user.slice(0,1).toUpperCase():"?";document.getElementById("menuName").textContent=s?s.user:"—";document.getElementById("menuEmail").textContent=s?s.email:"—";if(s){gate.classList.add("hidden");localStorage.setItem("bl_name",s.user);}else{gate.classList.remove("hidden");menu.classList.remove("show");}}
+function paintProfile(){const s=session();profileBtn.textContent=s?s.user.slice(0,1).toUpperCase():"?";document.getElementById("menuName").textContent=s?s.user:"-";document.getElementById("menuEmail").textContent=s?s.email:"-";if(s){gate.classList.add("hidden");if(window.localStorage)localStorage.setItem("bl_name",s.user);}else{gate.classList.remove("hidden");menu.classList.remove("show");}}
 function setMode(next){mode=next;title.textContent=mode==="signup"?"Sign up":"Log in";go.textContent=mode==="signup"?"Create account":"Log in";sw.textContent=mode==="signup"?"Have an account? Log in":"New here? Sign up";passEl.autocomplete=mode==="signup"?"new-password":"current-password";errEl.textContent="";}
 sw.onclick=()=>setMode(mode==="signup"?"login":"signup");
 profileBtn.onclick=()=>{if(!session()){gate.classList.remove("hidden");return;}menu.classList.toggle("show");};
@@ -43,3 +43,4 @@ form.onsubmit=async e=>{
 };
 paintProfile();
 setMode("signup");
+window.openAuth=function(m){setMode(m||"login");gate.classList.remove("hidden");};
