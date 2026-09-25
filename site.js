@@ -14,14 +14,33 @@ async function loadPublicBoard(){try{const res=await fetch("board.json?t="+Date.
 function paintBoard(){const donors=document.getElementById("boardDonors");if(!donors)return;const tips=donorList();donors.innerHTML=tips.length?tips.map((d,i)=>'<div class="row"><b>'+(i===0?"\u265B ":"")+(i+1)+". "+d.name+'</b><span>$'+d.amt+"</span></div>").join("")+'<p class="note">One seat per name.</p>':'<div class="empty">Nobody yet. The crown is still on the table.</div>';paintMeter();}
 const shareBtn=document.getElementById("shareBtn");
 if(shareBtn)shareBtn.onclick=async()=>{const data={title:"Broke Legend",text:"Sunset chips in Los Angeles.",url:shareUrl};try{if(navigator.share){await navigator.share(data);return;}}catch(e){if(e&&e.name==="AbortError")return;}try{await navigator.clipboard.writeText(shareUrl);toast("Link copied");}catch{prompt("Copy this link",shareUrl);}};
-function rainCards(){const ranks=["A","2","3","4","5","6","7","8","9","10","J","Q","K"], suits=["\u2660","\u2665","\u2666","\u2663"];for(let i=0;i<52;i++){const el=document.createElement("div");const s=suits[i%4];el.className="flycard"+((s==="\u2665"||s==="\u2666")?" red":"");el.innerHTML="<b>"+ranks[i%13]+"</b><span>"+s+"</span>";el.style.setProperty("--dx",(Math.random()*420-210)+"px");el.style.setProperty("--rot",(Math.random()*720-360)+"deg");el.style.animationDelay=(Math.random()*0.25)+"s";document.body.appendChild(el);setTimeout(()=>el.remove(),2100);}toast("Legend tipped. Cards on the felt.");}
+function rainCards(){
+  const ranks=["A","2","3","4","5","6","7","8","9","10","J","Q","K"], suits=["\u2660","\u2665","\u2666","\u2663"];
+  for(let i=0;i<56;i++){
+    const el=document.createElement("div");
+    const s=suits[i%4];
+    const left=i%2===0;
+    el.className="flycard "+(left?"from-left":"from-right")+((s==="\u2665"||s==="\u2666")?" red":"");
+    el.innerHTML="<b>"+ranks[i%13]+"</b><span>"+s+"</span>";
+    const dx=left?(40+Math.random()*280):-(40+Math.random()*280);
+    const dy=-(90+Math.random()*520);
+    el.style.setProperty("--dx",dx+"px");
+    el.style.setProperty("--dy",dy+"px");
+    el.style.setProperty("--rot",(Math.random()*720-360)+"deg");
+    el.style.animationDuration=(1.4+Math.random()*0.9)+"s";
+    el.style.animationDelay=(Math.random()*0.18)+"s";
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2400);
+  }
+  toast("Legend tipped. Cards on the felt.");
+}
 const startTab=(location.hash||"#donate").replace("#","");
 show(startTab==="leaderboard"?"leaderboard":"donate");
 loadPublicBoard().then(()=>{paintBoard();paintMeter();});
 paintMeter();
 if(/[?&]tipped=1/.test(location.search)){show("donate");setTimeout(rainCards,200);history.replaceState({}, "", location.pathname+location.hash);}
 (function(){
-  const css=".palms{position:fixed;inset:0;pointer-events:none;z-index:0;background:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 320'%3E%3Cpath fill='%23080808' d='M98 320v-150c-28-8-52-4-78 18 22-28 48-40 78-36-30-18-48-42-52-78 18 24 40 40 52 44-8-32 2-62 28-92-4 32 2 58 16 72 8-30 28-54 62-70-22 28-28 54-20 74 22-6 46-4 72 14-26-4-50 6-68 24 24 2 48 16 66 42-24-14-50-18-72-10v148z'/%3E%3C/svg%3E\") no-repeat -30px bottom,url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 320'%3E%3Cpath fill='%23080808' d='M98 320v-150c-28-8-52-4-78 18 22-28 48-40 78-36-30-18-48-42-52-78 18 24 40 40 52 44-8-32 2-62 28-92-4 32 2 58 16 72 8-30 28-54 62-70-22 28-28 54-20 74 22-6 46-4 72 14-26-4-50 6-68 24 24 2 48 16 66 42-24-14-50-18-72-10v148z'/%3E%3C/svg%3E\") no-repeat right -50px bottom;background-size:300px auto,360px auto;opacity:.75}.flycard{position:fixed;top:42%;left:50%;width:26px;height:38px;margin-left:-13px;background:#fffaf0;border-radius:4px;z-index:80;pointer-events:none;animation:burst 1.85s ease-out forwards;font:700 9px/1 DM Sans,sans-serif;color:#1a1a1a;padding:3px 4px;box-shadow:0 6px 10px rgba(0,0,0,.25);display:flex;flex-direction:column;justify-content:space-between}.flycard.red{color:#b4232c}@keyframes burst{to{transform:translate(var(--dx),260px) rotate(var(--rot));opacity:0}}";
+  const css=".palms{position:fixed;inset:0;pointer-events:none;z-index:0;background:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 320'%3E%3Cpath fill='%23080808' d='M98 320v-150c-28-8-52-4-78 18 22-28 48-40 78-36-30-18-48-42-52-78 18 24 40 40 52 44-8-32 2-62 28-92-4 32 2 58 16 72 8-30 28-54 62-70-22 28-28 54-20 74 22-6 46-4 72 14-26-4-50 6-68 24 24 2 48 16 66 42-24-14-50-18-72-10v148z'/%3E%3C/svg%3E\") no-repeat -30px bottom,url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 320'%3E%3Cpath fill='%23080808' d='M98 320v-150c-28-8-52-4-78 18 22-28 48-40 78-36-30-18-48-42-52-78 18 24 40 40 52 44-8-32 2-62 28-92-4 32 2 58 16 72 8-30 28-54 62-70-22 28-28 54-20 74 22-6 46-4 72 14-26-4-50 6-68 24 24 2 48 16 66 42-24-14-50-18-72-10v148z'/%3E%3C/svg%3E\") no-repeat right -50px bottom;background-size:300px auto,360px auto;opacity:.75}.flycard{position:fixed;bottom:6px;width:26px;height:38px;background:#fffaf0;border-radius:4px;z-index:80;pointer-events:none;animation:burst 1.8s ease-out forwards;font:700 9px/1 DM Sans,sans-serif;color:#1a1a1a;padding:3px 4px;box-shadow:0 6px 10px rgba(0,0,0,.25);display:flex;flex-direction:column;justify-content:space-between}.flycard.from-left{left:10px}.flycard.from-right{right:10px}.flycard.red{color:#b4232c}@keyframes burst{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}";
   const s=document.createElement("style");s.textContent=css;document.head.appendChild(s);
   if(!document.querySelector(".palms")){const d=document.createElement("div");d.className="palms";document.body.appendChild(d);}
   const map={"plan_VjSDuJt6qVAyN":"https://whop.com/checkout/ch_HnJwcskysXIc8WS/","plan_5QH6LReRBe40b":"https://whop.com/checkout/ch_t3bymfkB6UfR1cf/","plan_m6Xf1YtxPXhsF":"https://whop.com/checkout/ch_4hZBlhD2t15o9mT/","plan_VfC4056DZfXNB":"https://whop.com/checkout/ch_Dt2tZuevFpcwbfh/","plan_jsRI92G8xy2VR":"https://whop.com/checkout/ch_Hvixg3uxuyhz0oc/","plan_WFMehrw9zXnEz":"https://whop.com/checkout/ch_x54Gi5OmFWt4WoT/","plan_S5gy5AYJbMQS5":"https://whop.com/checkout/ch_uHUFwE5Qa5638n8/"};
