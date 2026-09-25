@@ -3,83 +3,77 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Broke Legend — Bankroll Critical</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=IBM+Plex+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<title>Broke Legend — Los Angeles</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600;1,700&family=Oswald:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-:root{--bg:#07070a;--gold:#f0c14b;--ink:#f4efe4;--mut:#9a937f;--red:#ff4d4d}
+:root{--cream:#f6efe2;--gold:#e2b657;--sun:#ff6a3d}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{min-height:100%;background:#07070a;color:var(--ink);font-family:"DM Sans",system-ui,sans-serif}
-body{background:radial-gradient(900px 500px at 50% -8%,rgba(240,193,75,.16),transparent 55%),radial-gradient(700px 400px at 100% 100%,rgba(180,40,40,.12),transparent 50%),linear-gradient(180deg,#0a0a0e,#07070a)}
-.felt{position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(circle at 20% 20%,rgba(255,255,255,.03) 0 1px,transparent 1px);background-size:18px 18px;opacity:.5}
-.float{position:fixed;font-size:42px;opacity:.08;animation:drift 16s linear infinite;pointer-events:none}
-.float:nth-child(2){left:8%;top:22%;animation-duration:18s}
-.float:nth-child(3){right:10%;top:40%;animation-duration:14s}
-@keyframes drift{0%{transform:translateY(0)}50%{transform:translateY(-18px) rotate(8deg)}100%{transform:translateY(0)}}
-.topbar{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto;align-items:center;padding:10px 12px;background:rgba(7,7,10,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(240,193,75,.18)}
+html,body{min-height:100%;color:var(--cream);font-family:"DM Sans",system-ui,sans-serif}
+body{background:linear-gradient(180deg,#2a1020 0%,#8a2a2a 18%,#ff6a3d 38%,#f0a35a 52%,#1b2a3a 72%,#0b0c12 100%);min-height:100vh}
+.sky{position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 42%,rgba(255,220,140,.35),transparent 28%)}
+.palm{position:fixed;bottom:-20px;width:0;height:0;border-left:70px solid transparent;border-right:70px solid transparent;border-bottom:220px solid #0a0a0c;opacity:.55;pointer-events:none}
+.palm:before{content:"";position:absolute;left:-8px;bottom:200px;width:16px;height:240px;background:#0a0a0c}
+.palm.l{left:-20px;transform:rotate(-8deg)}.palm.r{right:-20px;transform:rotate(10deg)}
+.topbar{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:1fr auto;align-items:center;padding:10px 12px;background:rgba(12,8,10,.72);backdrop-filter:blur(16px);border-bottom:1px solid rgba(226,182,87,.25)}
 .navlinks{display:flex;justify-content:center;gap:4px;flex-wrap:wrap}
-.topbar a,.topbar button.nav{appearance:none;border:0;background:0;color:var(--ink);font:inherit;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;padding:10px 12px;border-radius:999px;cursor:pointer}
-.topbar a.active,.topbar a:hover,.topbar button.nav:hover{color:var(--gold);background:rgba(240,193,75,.1)}
-.profile{width:36px;height:36px;border-radius:50%;border:1px solid rgba(240,193,75,.4);background:#1a1408;color:var(--gold);font-weight:800;cursor:pointer}
-.wrap{display:flex;justify-content:center;padding:22px 14px 56px}
-.stage{width:min(820px,100%)}
-.alert{display:flex;align-items:center;justify-content:center;gap:10px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);margin-bottom:18px}
-.dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);animation:blink 1.2s infinite}
-@keyframes blink{50%{opacity:.25}}
-.hero{text-align:center;padding:8px 8px 20px}
-.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
-h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(42px,11vw,84px);line-height:.9;margin:14px 0 12px}
-h1 em{font-style:italic;color:var(--gold)}
-.headline{font-size:clamp(16px,3vw,20px);color:#d7d0bf;max-width:22em;margin:0 auto 22px;line-height:1.45}
-.ticker{overflow:hidden;border-top:1px solid rgba(240,193,75,.16);border-bottom:1px solid rgba(240,193,75,.16);padding:10px 0;margin:0 0 26px}
-.ticker i{display:inline-block;white-space:nowrap;font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.08em;color:var(--mut);font-style:normal;animation:marq 22s linear infinite}
-@keyframes marq{from{transform:translateX(12%)}to{transform:translateX(-70%)}}
-.meter{background:rgba(255,255,255,.03);border:1px solid rgba(240,193,75,.18);border-radius:18px;padding:16px;margin-bottom:22px}
-.meterhead{display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin-bottom:10px}
-.meterhead b{color:var(--gold);font-family:"IBM Plex Mono",monospace}
-.bar{height:10px;border-radius:999px;background:#16161c;overflow:hidden}
-.fill{height:100%;width:0;background:linear-gradient(90deg,#7f1d1d,var(--gold));transition:width .6s ease}
-.throne{border:1px dashed rgba(240,193,75,.28);border-radius:22px;padding:28px 16px;text-align:center;margin-bottom:22px;background:radial-gradient(circle at 50% 0,rgba(240,193,75,.12),transparent 60%)}
-.throne .seat{font-size:42px;margin-bottom:8px}
-.throne h3{font-family:"Playfair Display",Georgia,serif;font-size:22px;margin-bottom:6px}
-.throne p{color:var(--mut);font-size:14px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-a.chip{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:96px;text-decoration:none;color:var(--ink);border-radius:50%;aspect-ratio:1;margin:0 auto;width:100%;max-width:160px;border:6px dashed rgba(7,7,10,.55);box-shadow:0 10px 0 rgba(0,0,0,.35),inset 0 2px 0 rgba(255,255,255,.25);transition:transform .15s ease}
-a.chip:hover{transform:translateY(-4px) rotate(-2deg)}
-a.chip strong{font-size:26px;font-family:"Playfair Display",Georgia,serif}
-a.chip span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
-.g1{background:radial-gradient(circle at 30% 30%,#fff8e7,#c9a36a)}.g1 strong,.g1 span{color:#3a2a10}
-.g5{background:radial-gradient(circle at 30% 30%,#ff8a8a,#9b1c1c)}
-.g10{background:radial-gradient(circle at 30% 30%,#8ab4ff,#1d4ed8)}
-.g25{background:radial-gradient(circle at 30% 30%,#86efac,#166534)}
-.g50{background:radial-gradient(circle at 30% 30%,#c4b5fd,#5b21b6)}
-.g100{background:radial-gradient(circle at 30% 30%,#fde68a,#92400e)}
-.g1000{background:radial-gradient(circle at 30% 30%,#111,#000);border-color:#f0c14b;grid-column:1/-1;max-width:220px;color:#f0c14b}
+.topbar a,.topbar button.nav{appearance:none;border:0;background:0;color:var(--cream);font:inherit;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;padding:10px 12px;border-radius:999px;cursor:pointer}
+.topbar a.active,.topbar a:hover,.topbar button.nav:hover{color:var(--gold);background:rgba(226,182,87,.12)}
+.profile{width:36px;height:36px;border-radius:50%;border:1px solid rgba(226,182,87,.45);background:#2a1a12;color:var(--gold);font-weight:800;cursor:pointer}
+.wrap{display:flex;justify-content:center;padding:28px 14px 64px;position:relative;z-index:1}
+.stage{width:min(860px,100%)}
+.hero{text-align:center;padding:10px 8px 8px}
+.eyebrow{font-family:Oswald,sans-serif;letter-spacing:.32em;font-size:13px;color:var(--gold)}
+h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(44px,12vw,92px);line-height:.88;margin:10px 0 8px}
+h1 em{font-style:italic;color:#fff4d6}
+.headline{max-width:22em;margin:0 auto 26px;color:#f3e6d2;font-size:17px;line-height:1.5}
+.meter{background:rgba(10,8,10,.45);border:1px solid rgba(226,182,87,.22);border-radius:18px;padding:14px 16px;margin-bottom:22px}
+.meterhead{display:flex;justify-content:space-between;font-size:12px;color:#d8cbb6;margin-bottom:8px}
+.meterhead b{color:var(--gold)}
+.bar{height:9px;border-radius:999px;background:#1a1214;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--sun),var(--gold));transition:width .6s}
+.throne{text-align:center;margin:0 0 28px;padding:22px 12px;border:1px dashed rgba(243,230,210,.28);border-radius:22px;background:rgba(10,8,10,.28)}
+.throne .seat{font-size:36px}.throne h3{font-family:"Playfair Display",Georgia,serif;margin:6px 0}.throne p{color:#d8cbb6;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px;justify-items:center}
+a.chip{width:148px;height:148px;border-radius:50%;text-decoration:none;color:inherit;display:grid;place-items:center;box-shadow:0 14px 18px rgba(0,0,0,.35),inset 0 0 0 11px var(--base);background:repeating-conic-gradient(from 8deg,var(--spot) 0 16deg,var(--base) 16deg 45deg);transition:transform .16s ease}
+a.chip:hover{transform:translateY(-6px) rotate(-3deg)}
+a.chip .label{width:86px;height:86px;border-radius:50%;background:var(--face);color:var(--inkface);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 0 0 4px rgba(255,255,255,.55),0 0 0 6px rgba(0,0,0,.18)}
+a.chip em{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-size:15px;line-height:1}
+a.chip small{font-family:Oswald,sans-serif;letter-spacing:.16em;font-size:8px;margin:3px 0 1px}
+a.chip b{font-family:Oswald,sans-serif;font-size:22px}
+.c1{--base:#f3ead8;--spot:#c9a36a;--face:#111;--inkface:#f6efe2}
+.c5{--base:#c23b3b;--spot:#f3ead8;--face:#111;--inkface:#f6efe2}
+.c10{--base:#2a4d8f;--spot:#f0c14b;--face:#0e1630;--inkface:#f6efe2}
+.c25{--base:#1f6b4a;--spot:#bfe3c8;--face:#082016;--inkface:#f6efe2}
+.c50{--base:#5b2d8e;--spot:#e2b657;--face:#18081f;--inkface:#f6efe2}
+.c100{--base:#f4eee3;--spot:#8fbfa8;--face:#111;--inkface:#f6efe2}
+.c1000{--base:#d7f0c8;--spot:#e2d14a;--face:#111;--inkface:#f6efe2;grid-column:1/-1}
 .panel{display:none}.panel.show{display:block}
-.cta{width:100%;border:0;border-radius:16px;padding:16px;font:inherit;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:#140e04;cursor:pointer}
-.ghost{width:100%;margin-top:8px;border:1px solid rgba(240,193,75,.28);background:0;color:var(--ink);border-radius:16px;padding:12px;font:inherit;cursor:pointer}
-.gate{position:fixed;inset:0;z-index:50;background:rgba(5,5,8,.88);display:flex;align-items:center;justify-content:center;padding:20px}
+.cta{width:100%;border:0;border-radius:16px;padding:16px;font:inherit;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:#1a120c;cursor:pointer}
+.ghost{width:100%;margin-top:8px;border:1px solid rgba(226,182,87,.3);background:0;color:var(--cream);border-radius:16px;padding:12px;font:inherit;cursor:pointer}
+.gate{position:fixed;inset:0;z-index:50;background:rgba(12,8,10,.88);display:flex;align-items:center;justify-content:center;padding:20px}
 .gate.hidden{display:none}
-.gatebox{width:min(420px,100%);border:1px solid rgba(240,193,75,.28);background:#101014;border-radius:24px;padding:28px 22px}
-.gatebox input{width:100%;margin:0 0 10px;background:#0a0a0e;border:1px solid rgba(240,193,75,.28);color:#fff;border-radius:14px;padding:12px;font:inherit}
-.gateErr{color:#f87171;text-align:center;min-height:18px;font-size:13px}
-.menu{position:absolute;right:12px;top:58px;width:220px;background:#101014;border:1px solid rgba(240,193,75,.28);border-radius:16px;padding:14px;display:none;z-index:40}
-.menu.show{display:block}.menu p{color:var(--mut);margin:4px 0;font-size:13px}
-.row{display:flex;justify-content:space-between;padding:14px 6px;border-bottom:1px solid rgba(240,193,75,.12);color:var(--mut)}
-.row b{color:var(--ink)}
-.empty{text-align:center;color:var(--mut);padding:28px 8px}
-.note,.foot{text-align:center;color:#7d7666;font-size:12px;margin-top:18px}
+.gatebox{width:min(420px,100%);border:1px solid rgba(226,182,87,.28);background:#1a1216;border-radius:24px;padding:28px 22px}
+.gatebox input{width:100%;margin:0 0 10px;background:#120c10;border:1px solid rgba(226,182,87,.28);color:#fff;border-radius:14px;padding:12px;font:inherit}
+.gateErr{color:#ff8aa1;text-align:center;min-height:18px;font-size:13px}
+.menu{position:absolute;right:12px;top:58px;width:220px;background:#1a1216;border:1px solid rgba(226,182,87,.28);border-radius:16px;padding:14px;display:none;z-index:40}
+.menu.show{display:block}.menu p{color:#d8cbb6;margin:4px 0;font-size:13px}
+.row{display:flex;justify-content:space-between;padding:14px 6px;border-bottom:1px solid rgba(243,230,210,.12);color:#d8cbb6}
+.row b{color:var(--cream)}
+.empty{text-align:center;color:#d8cbb6;padding:28px 8px}
+.note,.foot{text-align:center;color:#cbbba4;font-size:12px;margin-top:22px}
 .foot a{color:var(--gold);text-decoration:none}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--gold);color:#140e04;padding:10px 16px;border-radius:999px;opacity:0;font-weight:700;transition:.2s;z-index:60}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--gold);color:#1a120c;padding:10px 16px;border-radius:999px;opacity:0;font-weight:700;transition:.2s;z-index:60}
 .toast.show{opacity:1}
 h2{font-family:"Playfair Display",Georgia,serif;font-size:32px;text-align:center;margin:8px 0}
-.sub{text-align:center;color:var(--mut);margin:0 auto 20px}
-@media(min-width:640px){.grid{grid-template-columns:repeat(4,1fr)}.g1000{grid-column:auto}}
-@media(max-width:640px){h1{font-size:46px}a.chip{max-width:140px;min-height:88px}}
+.sub{text-align:center;color:#d8cbb6;margin:0 auto 20px}
+@media(min-width:720px){.grid{grid-template-columns:repeat(4,1fr)}.c1000{grid-column:auto}}
+@media(max-width:640px){a.chip{width:132px;height:132px}a.chip .label{width:76px;height:76px}a.chip b{font-size:18px}}
 </style>
 </head>
 <body>
-<div class="felt"></div>
-<div class="float">♠</div><div class="float">♥</div><div class="float">♦</div>
+<div class="sky"></div>
+<div class="palm l"></div>
+<div class="palm r"></div>
 <nav class="topbar">
 <div class="navlinks">
 <a href="#donate" class="active" data-tab="donate">Donate</a>
@@ -97,7 +91,7 @@ h2{font-family:"Playfair Display",Georgia,serif;font-size:32px;text-align:center
 <div class="gatebox">
 <p class="eyebrow">Table pass</p>
 <h2 id="gateTitle">Sign up</h2>
-<p class="sub">Just a username and a password. Username can only be used once.</p>
+<p class="sub">Username and password. Name can only be used once.</p>
 <form id="authForm">
 <input id="authUser" type="text" autocomplete="username" placeholder="Username" maxlength="16" />
 <input id="authPass" type="password" autocomplete="new-password" placeholder="Password" minlength="6" />
@@ -109,13 +103,11 @@ h2{font-family:"Playfair Display",Georgia,serif;font-size:32px;text-align:center
 </div>
 <div class="wrap"><main class="stage">
 <section id="donate" class="panel show">
-<div class="alert"><i class="dot"></i> Bankroll status: critical</div>
 <div class="hero">
-<p class="eyebrow">The last seat at the table</p>
+<p class="eyebrow">Los Angeles</p>
 <h1>Broke <em>Legend</em></h1>
-<p class="headline">Blackjack will not pay for itself. The board is empty. First chip gets the throne.</p>
+<p class="headline">Sunset chips. Empty throne. Blackjack still will not pay rent.</p>
 </div>
-<div class="ticker"><i>NO TIPS ON RECORD · HOUSE IS PATIENT · RENT IS NOT · FIRST NAME LOCKS THE CROWN · TIPS ARE DONATIONS NOT BETS · </i></div>
 <div class="meter">
 <div class="meterhead"><span>Night fund</span><b id="raised">$0 / $250</b></div>
 <div class="bar"><div class="fill" id="fill"></div></div>
@@ -123,22 +115,22 @@ h2{font-family:"Playfair Display",Georgia,serif;font-size:32px;text-align:center
 <div class="throne" id="throne">
 <div class="seat">♛</div>
 <h3>Seat 1 is empty</h3>
-<p>Whoever tips first becomes the original whale.</p>
+<p>First tip takes the Hollywood seat.</p>
 </div>
 <div class="grid">
-<a class="chip g1" href="https://whop.com/checkout/plan_VjSDuJt6qVAyN"><strong>$1</strong><span>Pity chip</span></a>
-<a class="chip g5" href="https://whop.com/checkout/plan_5QH6LReRBe40b"><strong>$5</strong><span>Bus fare</span></a>
-<a class="chip g10" href="https://whop.com/checkout/plan_m6Xf1YtxPXhsF"><strong>$10</strong><span>One hand</span></a>
-<a class="chip g25" href="https://whop.com/checkout/plan_VfC4056DZfXNB"><strong>$25</strong><span>Buy-in</span></a>
-<a class="chip g50" href="https://whop.com/checkout/plan_jsRI92G8xy2VR"><strong>$50</strong><span>Double</span></a>
-<a class="chip g100" href="https://whop.com/checkout/plan_WFMehrw9zXnEz"><strong>$100</strong><span>High roller</span></a>
-<a class="chip g1000" href="https://whop.com/checkout/plan_S5gy5AYJbMQS5"><strong>$1,000</strong><span>Crown the legend</span></a>
+<a class="chip c1" href="https://whop.com/checkout/plan_VjSDuJt6qVAyN"><span class="label"><em>Broke</em><small>LOS ANGELES</small><b>$1</b></span></a>
+<a class="chip c5" href="https://whop.com/checkout/plan_5QH6LReRBe40b"><span class="label"><em>Legend</em><small>LOS ANGELES</small><b>$5</b></span></a>
+<a class="chip c10" href="https://whop.com/checkout/plan_m6Xf1YtxPXhsF"><span class="label"><em>Broke</em><small>WESTSIDE</small><b>$10</b></span></a>
+<a class="chip c25" href="https://whop.com/checkout/plan_VfC4056DZfXNB"><span class="label"><em>Legend</em><small>VENICE</small><b>$25</b></span></a>
+<a class="chip c50" href="https://whop.com/checkout/plan_jsRI92G8xy2VR"><span class="label"><em>Broke</em><small>SUNSET</small><b>$50</b></span></a>
+<a class="chip c100" href="https://whop.com/checkout/plan_WFMehrw9zXnEz"><span class="label"><em>Legend</em><small>LOS ANGELES</small><b>$100</b></span></a>
+<a class="chip c1000" href="https://whop.com/checkout/plan_S5gy5AYJbMQS5"><span class="label"><em>Crown</em><small>HOLLYWOOD</small><b>$1K</b></span></a>
 </div>
 </section>
 <section id="leaderboard" class="panel">
 <p class="eyebrow">The board</p>
 <h2>Who tipped</h2>
-<p class="sub">One name. One seat. Empty until someone blinks.</p>
+<p class="sub">One name. One seat.</p>
 <div id="boardDonors"></div>
 </section>
 <p class="foot">Tips are donations, not bets. 18+. Powered by <a href="https://whop.com/donateforcasino-18">Whop</a>.</p>
