@@ -6,8 +6,6 @@ const panels = {
 };
 const tabs = document.querySelectorAll("[data-tab]");
 const shareUrl = location.origin.includes("localhost") ? "https://brokelegend.com" : location.origin;
-const GOAL = 250;
-
 const CHECKOUT = {
   1: "https://whop.com/checkout/ch_T195O0GEqmnu5BD/",
   5: "https://whop.com/checkout/ch_RgTbYfHeBAf88dx/",
@@ -17,26 +15,94 @@ const CHECKOUT = {
   100: "https://whop.com/checkout/ch_l1lUoVayDGnGSRM/",
   1000: "https://whop.com/checkout/ch_OkjMRrPtoXwsDMR/"
 };
-
 const CHIP_META = [
-  { amt: 1, cls: "c1", name: "Broke", place: "LOS ANGELES", card: "Common card", sell: 0.4 },
-  { amt: 5, cls: "c5", name: "Legend", place: "LOS ANGELES", card: "Holo card", sell: 2 },
-  { amt: 10, cls: "c10", name: "Broke", place: "WESTSIDE", card: "Reverse holo", sell: 4 },
-  { amt: 25, cls: "c25", name: "Legend", place: "VENICE", card: "Promo card", sell: 10 },
-  { amt: 50, cls: "c50", name: "Broke", place: "SUNSET", card: "Full art", sell: 20 },
-  { amt: 100, cls: "c100", name: "Legend", place: "LOS ANGELES", card: "Alt art", sell: 40 },
-  { amt: 1000, cls: "c1000", name: "Crown", place: "HOLLYWOOD", card: "Grailed pull", sell: 250 }
+  { amt: 1, cls: "c1", name: "Broke", place: "LOS ANGELES", box: "Penny box" },
+  { amt: 5, cls: "c5", name: "Legend", place: "LOS ANGELES", box: "Holo box" },
+  { amt: 10, cls: "c10", name: "Broke", place: "WESTSIDE", box: "Westside box" },
+  { amt: 25, cls: "c25", name: "Legend", place: "VENICE", box: "Venice box" },
+  { amt: 50, cls: "c50", name: "Broke", place: "SUNSET", box: "Sunset box" },
+  { amt: 100, cls: "c100", name: "Legend", place: "LOS ANGELES", box: "Alt-art box" },
+  { amt: 1000, cls: "c1000", name: "Crown", place: "HOLLYWOOD", box: "Crown box" }
 ];
-
-function prizesFor(chip) {
-  return [
-    { id: "cents", name: "0.15¢ credit", value: 0.0015, chance: 98, type: "credit", kind: "common", ico: "¢" },
-    { id: "five", name: "$5 credit", value: 5, chance: 1, type: "credit", kind: "mid", ico: "$" },
-    { id: "card", name: chip.card, value: chip.sell, chance: 0.99, type: "item", kind: "card", ico: "🃏", sellOnly: true },
-    { id: "grand", name: "$1,000 credit", value: 1000, chance: 0.01, type: "credit", kind: "jack", ico: "♛" }
-  ];
-}
-
+const BOXES = {
+  1: [
+    { name: "0.15¢ credit", value: 0.0015, chance: 68, type: "credit", kind: "common", ico: "¢" },
+    { name: "5¢ credit", value: 0.05, chance: 16, type: "credit", kind: "common", ico: "¢" },
+    { name: "Sticker pack", value: 0.25, chance: 8, type: "item", kind: "card", ico: "★", sellOnly: true },
+    { name: "Common card", value: 0.4, chance: 5, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$1 credit", value: 1, chance: 2.4, type: "credit", kind: "mid", ico: "$" },
+    { name: "Foil card", value: 1.2, chance: 0.4, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$5 credit", value: 5, chance: 0.19, type: "credit", kind: "mid", ico: "$" },
+    { name: "$25 credit", value: 25, chance: 0.01, type: "credit", kind: "jack", ico: "♛" }
+  ],
+  5: [
+    { name: "1¢ credit", value: 0.01, chance: 52, type: "credit", kind: "common", ico: "¢" },
+    { name: "25¢ credit", value: 0.25, chance: 24, type: "credit", kind: "common", ico: "¢" },
+    { name: "Holo sticker", value: 1, chance: 10, type: "item", kind: "card", ico: "★", sellOnly: true },
+    { name: "Holo card", value: 2, chance: 7, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$2 credit", value: 2, chance: 4, type: "credit", kind: "mid", ico: "$" },
+    { name: "$5 credit", value: 5, chance: 2.4, type: "credit", kind: "mid", ico: "$" },
+    { name: "Signed card", value: 8, chance: 0.5, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$25 credit", value: 25, chance: 0.09, type: "credit", kind: "jack", ico: "♛" },
+    { name: "$100 credit", value: 100, chance: 0.01, type: "credit", kind: "jack", ico: "♛" }
+  ],
+  10: [
+    { name: "5¢ credit", value: 0.05, chance: 48, type: "credit", kind: "common", ico: "¢" },
+    { name: "50¢ credit", value: 0.5, chance: 24, type: "credit", kind: "common", ico: "¢" },
+    { name: "Enamel pin", value: 2, chance: 10, type: "item", kind: "card", ico: "✦", sellOnly: true },
+    { name: "Reverse holo", value: 4, chance: 8, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$5 credit", value: 5, chance: 6, type: "credit", kind: "mid", ico: "$" },
+    { name: "$10 credit", value: 10, chance: 3.2, type: "credit", kind: "mid", ico: "$" },
+    { name: "Promo slab", value: 12, chance: 0.6, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$50 credit", value: 50, chance: 0.18, type: "credit", kind: "jack", ico: "♛" },
+    { name: "$250 credit", value: 250, chance: 0.02, type: "credit", kind: "jack", ico: "♛" }
+  ],
+  25: [
+    { name: "10¢ credit", value: 0.1, chance: 42, type: "credit", kind: "common", ico: "¢" },
+    { name: "$1 credit", value: 1, chance: 26, type: "credit", kind: "common", ico: "$" },
+    { name: "Felt patch", value: 6, chance: 12, type: "item", kind: "card", ico: "✦", sellOnly: true },
+    { name: "Promo card", value: 10, chance: 10, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$10 credit", value: 10, chance: 6, type: "credit", kind: "mid", ico: "$" },
+    { name: "$25 credit", value: 25, chance: 3.2, type: "credit", kind: "mid", ico: "$" },
+    { name: "Numbered card", value: 30, chance: 0.6, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$100 credit", value: 100, chance: 0.18, type: "credit", kind: "jack", ico: "♛" },
+    { name: "$500 credit", value: 500, chance: 0.02, type: "credit", kind: "jack", ico: "♛" }
+  ],
+  50: [
+    { name: "25¢ credit", value: 0.25, chance: 38, type: "credit", kind: "common", ico: "¢" },
+    { name: "$2 credit", value: 2, chance: 28, type: "credit", kind: "common", ico: "$" },
+    { name: "Zippo", value: 8, chance: 12, type: "item", kind: "card", ico: "✦", sellOnly: true },
+    { name: "Full art", value: 20, chance: 10, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$20 credit", value: 20, chance: 7, type: "credit", kind: "mid", ico: "$" },
+    { name: "$50 credit", value: 50, chance: 4, type: "credit", kind: "mid", ico: "$" },
+    { name: "Gold border", value: 45, chance: 0.7, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$250 credit", value: 250, chance: 0.28, type: "credit", kind: "jack", ico: "♛" },
+    { name: "$1,000 credit", value: 1000, chance: 0.02, type: "credit", kind: "jack", ico: "♛" }
+  ],
+  100: [
+    { name: "50¢ credit", value: 0.5, chance: 34, type: "credit", kind: "common", ico: "¢" },
+    { name: "$5 credit", value: 5, chance: 28, type: "credit", kind: "common", ico: "$" },
+    { name: "House cap", value: 15, chance: 12, type: "item", kind: "card", ico: "✦", sellOnly: true },
+    { name: "Alt art", value: 40, chance: 12, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$40 credit", value: 40, chance: 8, type: "credit", kind: "mid", ico: "$" },
+    { name: "$100 credit", value: 100, chance: 4.6, type: "credit", kind: "mid", ico: "$" },
+    { name: "1st edition", value: 80, chance: 1, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$500 credit", value: 500, chance: 0.38, type: "credit", kind: "jack", ico: "♛" },
+    { name: "$2,500 credit", value: 2500, chance: 0.02, type: "credit", kind: "jack", ico: "♛" }
+  ],
+  1000: [
+    { name: "$5 credit", value: 5, chance: 32, type: "credit", kind: "common", ico: "$" },
+    { name: "$25 credit", value: 25, chance: 28, type: "credit", kind: "common", ico: "$" },
+    { name: "Silk jacket", value: 80, chance: 12, type: "item", kind: "card", ico: "✦", sellOnly: true },
+    { name: "Grailed pull", value: 250, chance: 12, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$250 credit", value: 250, chance: 9, type: "credit", kind: "mid", ico: "$" },
+    { name: "$1,000 credit", value: 1000, chance: 5.4, type: "credit", kind: "mid", ico: "$" },
+    { name: "Museum slab", value: 600, chance: 1.2, type: "item", kind: "card", ico: "🃏", sellOnly: true },
+    { name: "$5,000 credit", value: 5000, chance: 0.36, type: "credit", kind: "jack", ico: "♛" },
+    { name: "$25,000 credit", value: 25000, chance: 0.04, type: "credit", kind: "jack", ico: "♛" }
+  ]
+};
+function prizesFor(chip) { return BOXES[chip.amt] || BOXES[1]; }
 function toast(t) {
   const el = document.getElementById("toast");
   if (!el) return;
@@ -44,32 +110,17 @@ function toast(t) {
   el.classList.add("show");
   setTimeout(() => el.classList.remove("show"), 1800);
 }
-
 function money(n) {
   if (n > 0 && n < 0.01) return "$" + n.toFixed(4);
   return "$" + Number(n).toFixed(2);
 }
-
-function store() {
-  try { return JSON.parse(localStorage.getItem("bl_case") || "{}"); } catch (e) { return {}; }
-}
-function saveStore(next) {
-  localStorage.setItem("bl_case", JSON.stringify(next));
-}
+function store() { try { return JSON.parse(localStorage.getItem("bl_case") || "{}"); } catch (e) { return {}; } }
+function saveStore(next) { localStorage.setItem("bl_case", JSON.stringify(next)); }
 function state() {
   const s = store();
-  return {
-    selected: Number(s.selected || 1),
-    owned: s.owned || {},
-    credit: Number(s.credit || 0),
-    pocket: s.pocket || [],
-    spinning: false
-  };
+  return { selected: Number(s.selected || 1), owned: s.owned || {}, credit: Number(s.credit || 0), pocket: s.pocket || [], spinning: false };
 }
-function patch(partial) {
-  saveStore(Object.assign(store(), partial));
-}
-
+function patch(partial) { saveStore(Object.assign(store(), partial)); }
 function show(tab) {
   Object.keys(panels).forEach(k => panels[k] && panels[k].classList.remove("show"));
   (panels[tab] || panels.chips).classList.add("show");
@@ -79,13 +130,11 @@ function show(tab) {
   if (tab === "pocket") paintPocket();
   if (tab === "chips") paintOwned();
 }
-
 tabs.forEach(el => el.addEventListener("click", e => {
   e.preventDefault();
   show(el.dataset.tab);
   history.replaceState(null, "", "#" + el.dataset.tab);
 }));
-
 function keyName(s) { return String(s || "").trim().toLowerCase(); }
 function uniq(list) {
   const map = {};
@@ -103,18 +152,12 @@ function donorList() {
   return uniq(list).sort((a, b) => b.amt - a.amt).slice(0, 20);
 }
 function saveDonors(list) { localStorage.setItem("bl_public_donors", JSON.stringify(uniq(list))); }
-function totalRaised() { return donorList().reduce((s, d) => s + Number(d.amt || 0), 0); }
 function paintMeter() {
-  const raised = totalRaised();
-  const pct = Math.max(0, Math.min(100, Math.round(raised / GOAL * 100)));
-  const fill = document.getElementById("fill"), lab = document.getElementById("raised"), throne = document.getElementById("throne");
-  if (lab) lab.textContent = "$" + raised + " / $" + GOAL;
-  if (fill) fill.style.width = pct + "%";
+  const throne = document.getElementById("throne");
   const first = donorList()[0];
-  if (throne) {
-    if (first) throne.innerHTML = '<div class="seat">\u265B</div><h3>' + first.name + ' holds the throne</h3><p>$' + first.amt + ' \u00b7 the board finally blinked.</p>';
-    else throne.innerHTML = '<div class="seat">\u265B</div><h3>Seat 1 is empty</h3><p>First chip takes the Hollywood seat.</p>';
-  }
+  if (!throne) return;
+  if (first) throne.innerHTML = '<div class="seat">♛</div><h3>' + first.name + ' holds the throne</h3><p>$' + first.amt + ' \u00b7 the board finally blinked.</p>';
+  else throne.innerHTML = '<div class="seat">♛</div><h3>Seat 1 is empty</h3><p>First chip takes the Hollywood seat.</p>';
 }
 async function loadPublicBoard() {
   try {
@@ -129,7 +172,7 @@ function paintBoard() {
   if (!donors) return;
   const tips = donorList();
   donors.innerHTML = tips.length
-    ? tips.map((d, i) => '<div class="row"><b>' + (i === 0 ? "\u265B " : "") + (i + 1) + ". " + d.name + '</b><span>$' + d.amt + "</span></div>").join("") + '<p class="note">One seat per name. Board refreshes after each buy-in.</p>'
+    ? tips.map((d, i) => '<div class="row"><b>' + (i === 0 ? "♛ " : "") + (i + 1) + ". " + d.name + '</b><span>$' + d.amt + "</span></div>").join("") + '<p class="note">One seat per name. Board refreshes after each buy-in.</p>'
     : '<div class="empty">Nobody yet. The crown is still on the table.</div>';
   paintMeter();
 }
@@ -147,12 +190,11 @@ function recordTip(amt) {
   const k = keyName(name);
   const prev = list.find(d => keyName(d.name) === k);
   const next = prev ? Number(prev.amt) + amt : amt;
-  saveDonors([{ name, amt: next }].concat(list.filter(d => keyName(d.name) !== k)));
+  saveDonors([{ name: name, amt: next }].concat(list.filter(d => keyName(d.name) !== k)));
   paintBoard(); paintMeter();
 }
 function selectedChip() {
-  const amt = state().selected;
-  return CHIP_META.find(c => c.amt === amt) || CHIP_META[0];
+  return CHIP_META.find(c => c.amt === state().selected) || CHIP_META[0];
 }
 function paintChips() {
   const grid = document.getElementById("chipGrid");
@@ -174,10 +216,19 @@ function paintCredit() {
 }
 function paintOdds() {
   const chip = selectedChip();
-  const box = document.getElementById("oddsBox");
   const prizes = prizesFor(chip);
-  box.innerHTML = "<p>" + chip.name + " " + chip.place + " \u00b7 $" + (chip.amt >= 1000 ? "1,000" : chip.amt) + " chip</p>" +
+  const label = chip.box + " \u00b7 $" + (chip.amt >= 1000 ? "1,000" : chip.amt) + " chip";
+  const eye = document.getElementById("boxEyebrow");
+  const title = document.getElementById("boxTitle");
+  const sub = document.getElementById("boxSub");
+  if (eye) eye.textContent = chip.place;
+  if (title) title.textContent = chip.box;
+  if (sub) sub.textContent = "This box only opens with the $" + (chip.amt >= 1000 ? "1,000" : chip.amt) + " " + chip.name + " chip. Cards and merch sell back as store credit.";
+  const felt = document.querySelector(".felt");
+  if (felt) felt.setAttribute("data-box", chip.box);
+  document.getElementById("oddsBox").innerHTML = "<p>" + label + "</p>" +
     prizes.map(p => "<div><span>" + p.name + (p.sellOnly ? " \u00b7 sell only" : "") + "</span><span>" + p.chance + "%</span></div>").join("");
+  buildReel(prizes, prizes[0], 16);
 }
 function paintPocket() {
   const list = document.getElementById("pocketList");
@@ -194,10 +245,7 @@ function paintPocket() {
 function pickPrize(prizes) {
   const r = Math.random() * 100;
   let acc = 0;
-  for (const p of prizes) {
-    acc += p.chance;
-    if (r <= acc) return p;
-  }
+  for (const p of prizes) { acc += p.chance; if (r <= acc) return p; }
   return prizes[prizes.length - 1];
 }
 function buildReel(prizes, winner, copies) {
@@ -211,11 +259,10 @@ function buildReel(prizes, winner, copies) {
       (p.type === "item" ? "sell " + money(p.value) : money(p.value)) +
     "</div></div>"
   ).join("");
-  return { reel, winIndex };
+  return { reel: reel, winIndex: winIndex };
 }
 function addChip(amt, n) {
-  const s = state();
-  const owned = Object.assign({}, s.owned);
+  const owned = Object.assign({}, state().owned);
   owned[amt] = (owned[amt] || 0) + (n || 1);
   patch({ owned: owned, selected: amt });
   paintChips();
@@ -264,20 +311,17 @@ document.getElementById("spinBtn").onclick = () => {
   const prizes = prizesFor(chip);
   const winner = pickPrize(prizes);
   const built = buildReel(prizes, winner, 40);
-  const reel = built.reel, winIndex = built.winIndex;
   const wrap = document.querySelector(".reel-wrap");
-  const tileW = 108 + 12;
-  const centerPad = wrap.clientWidth / 2 - 54;
-  const target = winIndex * tileW - centerPad;
-  reel.style.transition = "none";
-  reel.style.transform = "translateX(0px)";
+  const target = built.winIndex * 120 - (wrap.clientWidth / 2 - 54);
+  built.reel.style.transition = "none";
+  built.reel.style.transform = "translateX(0px)";
   patch({ spinning: true });
   document.getElementById("spinBtn").disabled = true;
-  document.getElementById("spinResult").textContent = "Lid\u2019s off. Don\u2019t blink.";
+  document.getElementById("spinResult").textContent = "Lid is off. Don't blink.";
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      reel.style.transition = "transform 4.8s cubic-bezier(0.15, 0.72, 0.08, 1)";
-      reel.style.transform = "translateX(" + (-target) + "px)";
+      built.reel.style.transition = "transform 4.8s cubic-bezier(0.15, 0.72, 0.08, 1)";
+      built.reel.style.transform = "translateX(" + (-target) + "px)";
     });
   });
   setTimeout(() => {
@@ -299,50 +343,42 @@ const shareBtn = document.getElementById("shareBtn");
 if (shareBtn) shareBtn.onclick = async () => {
   const data = { title: "Broke Legend", text: "Buy a chip. Open the box.", url: shareUrl };
   try { if (navigator.share) { await navigator.share(data); return; } } catch (e) { if (e && e.name === "AbortError") return; }
-  try { await navigator.clipboard.writeText(shareUrl); toast("Link copied"); } catch { prompt("Copy this link", shareUrl); }
+  try { await navigator.clipboard.writeText(shareUrl); toast("Link copied"); } catch (e) { prompt("Copy this link", shareUrl); }
 };
 function rainCards() {
-  const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-  const suits = ["\u2660", "\u2665", "\u2666", "\u2663"];
-  const bits = []; const start = performance.now(); const H = window.innerHeight, W = window.innerWidth;
+  const ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+  const suits = ["\u2660","\u2665","\u2666","\u2663"];
+  const bits = [];
+  const H = window.innerHeight, W = window.innerWidth;
   function spawn(i) {
     const s = suits[i % 4], left = i % 2 === 0;
     const el = document.createElement("div");
     el.className = "flycard" + ((s === "\u2665" || s === "\u2666") ? " red" : "");
-    el.innerHTML = "<b>" + ranks[i % 13] + "</b><i>" + s + "</i><span>" + s + "</span>";
+    el.innerHTML = "<b>" + ranks[i % 13] + "</b><i>" + s + "</i>";
     document.body.appendChild(el);
-    const sweep = 0.35 + 0.65 * Math.abs(Math.sin((performance.now() - start) / 420));
-    const ang = (22 + sweep * 58) * Math.PI / 180;
-    const speed = 7.2 + Math.random() * 5.4;
-    bits.push({ el: el, x: left ? 14 : W - 52, y: H - 58, vx: (left ? 1 : -1) * Math.cos(ang) * speed * (0.85 + Math.random() * 0.4), vy: -Math.sin(ang) * speed * (1.05 + Math.random() * 0.35), g: 0.16 + Math.random() * 0.08, rot: Math.random() * 40 - 20, spin: (left ? 1 : -1) * (2.4 + Math.random() * 4.2), flip: Math.random() * 180, flipV: 8 + Math.random() * 14, life: 0, max: 2600 + Math.random() * 1400 });
+    const ang = (30 + Math.random() * 40) * Math.PI / 180;
+    const speed = 8 + Math.random() * 5;
+    bits.push({ el: el, x: left ? 14 : W - 52, y: H - 58, vx: (left ? 1 : -1) * Math.cos(ang) * speed, vy: -Math.sin(ang) * speed, g: 0.18, rot: 0, spin: (left ? 1 : -1) * 3, life: 0, max: 2800 });
   }
-  let n = 0; const emitter = setInterval(() => { spawn(n++); spawn(n++); if (n >= 80) clearInterval(emitter); }, 42);
-  let last = performance.now();
-  function tick(now) {
-    const dt = Math.min(32, now - last) / 16.67; last = now;
+  let n = 0;
+  const emitter = setInterval(() => { spawn(n++); spawn(n++); if (n >= 60) clearInterval(emitter); }, 40);
+  function tick() {
     for (let i = bits.length - 1; i >= 0; i--) {
       const c = bits[i];
-      c.vy += c.g * dt; c.x += c.vx * dt; c.y += c.vy * dt; c.rot += c.spin * dt; c.flip += c.flipV * dt; c.life += 16.67 * dt;
-      const fade = c.life > c.max - 500 ? Math.max(0, 1 - (c.life - (c.max - 500)) / 500) : 1;
-      c.el.style.transform = "translate(" + c.x + "px," + c.y + "px) rotate(" + c.rot + "deg) rotateY(" + c.flip + "deg)";
-      c.el.style.opacity = String(fade);
+      c.vy += c.g; c.x += c.vx; c.y += c.vy; c.rot += c.spin; c.life += 16;
+      c.el.style.transform = "translate(" + c.x + "px," + c.y + "px) rotate(" + c.rot + "deg)";
+      c.el.style.opacity = c.life > c.max - 400 ? String(Math.max(0, 1 - (c.life - (c.max - 400)) / 400)) : "1";
       if (c.life > c.max || c.y > H + 80) { c.el.remove(); bits.splice(i, 1); }
     }
-    if (bits.length || n < 80) requestAnimationFrame(tick);
+    if (bits.length || n < 60) requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
-  toast("Chip\u2019s on the felt.");
+  toast("Chip is on the felt.");
 }
-(function injectExtraCss() {
-  const css = ".palms{position:fixed;inset:0;pointer-events:none;z-index:0;background:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 320'%3E%3Cpath fill='%23080808' d='M98 320v-150c-28-8-52-4-78 18 22-28 48-40 78-36-30-18-48-42-52-78 18 24 40 40 52 44-8-32 2-62 28-92-4 32 2 58 16 72 8-30 28-54 62-70-22 28-28 54-20 74 22-6 46-4 72 14-26-4-50 6-68 24 24 2 48 16 66 42-24-14-50-18-72-10v148z'/%3E%3C/svg%3E\") no-repeat -30px bottom,url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 320'%3E%3Cpath fill='%23080808' d='M98 320v-150c-28-8-52-4-78 18 22-28 48-40 78-36-30-18-48-42-52-78 18 24 40 40 52 44-8-32 2-62 28-92-4 32 2 58 16 72 8-30 28-54 62-70-22 28-28 54-20 74 22-6 46-4 72 14-26-4-50 6-68 24 24 2 48 16 66 42-24-14-50-18-72-10v148z'/%3E%3C/svg%3E\") no-repeat right -50px bottom;background-size:300px auto,360px auto;opacity:.75}.flycard{position:fixed;left:0;top:0;width:40px;height:56px;background:linear-gradient(165deg,#fffdf8 0%,#f4ead4 100%);border-radius:6px;z-index:80;pointer-events:none;font:700 12px/1 DM Sans,sans-serif;color:#1a1a1a;padding:5px;box-shadow:0 10px 16px rgba(0,0,0,.3);display:flex;flex-direction:column;justify-content:space-between;will-change:transform,opacity}.flycard i{font-style:normal;font-size:18px;text-align:center}.flycard.red{color:#b4232c}";
+(function extraCss() {
   const s = document.createElement("style");
-  s.textContent = css;
+  s.textContent = ".flycard{position:fixed;left:0;top:0;width:40px;height:56px;background:#fffdf8;border-radius:6px;z-index:80;pointer-events:none;font:700 12px/1 DM Sans,sans-serif;color:#1a1a1a;padding:5px;box-shadow:0 10px 16px rgba(0,0,0,.3)}.flycard.red{color:#b4232c}";
   document.head.appendChild(s);
-  if (!document.querySelector(".palms")) {
-    const d = document.createElement("div");
-    d.className = "palms";
-    document.body.appendChild(d);
-  }
 })();
 paintChips();
 paintOwned();
