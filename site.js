@@ -295,7 +295,7 @@ function runSpin(winner, prizes, after) {
   }, duration + 40);
 }
 const grid = document.getElementById("chipGrid");
-If (grid) grid.addEventListener("click", function(e){
+if (grid) grid.addEventListener("click", function(e){
   const btn = e.target.closest("[data-amt]");
   if (!btn) return;
   patch({ selected: Number(btn.dataset.amt) });
@@ -303,14 +303,14 @@ If (grid) grid.addEventListener("click", function(e){
   paintOdds();
 });
 const buyChip = document.getElementById("buyChip");
-If (buyChip) buyChip.onclick = function(){
+if (buyChip) buyChip.onclick = function(){
   const chip = selectedChip();
   setPending(chip.amt);
   const back = encodeURIComponent(location.href.split("#")[0] + "?tipped=1&amt=" + chip.amt);
   location.href = CHECKOUT[chip.amt] + (CHECKOUT[chip.amt].indexOf("?") >= 0 ? "&" : "?") + "redirect=" + back;
 };
 const buyCredit = document.getElementById("buyCredit");
-If (buyCredit) buyCredit.onclick = function(){
+if (buyCredit) buyCredit.onclick = function(){
   const chip = selectedChip();
   const s = state();
   if (s.credit < chip.amt) { toast("Need " + money(chip.amt) + " credit for this box"); return; }
@@ -320,7 +320,7 @@ If (buyCredit) buyCredit.onclick = function(){
   show("box");
 };
 const paidBtn = document.getElementById("paidBtn");
-If (paidBtn) paidBtn.onclick = function(){
+if (paidBtn) paidBtn.onclick = function(){
   const pending = readPending();
   const amt = (pending && pending.amt) || selectedChip().amt;
   addChip(amt, 1);
@@ -329,9 +329,9 @@ If (paidBtn) paidBtn.onclick = function(){
   show("box");
 };
 const toBox = document.getElementById("toBox");
-If (toBox) toBox.onclick = function(){ show("box"); };
+if (toBox) toBox.onclick = function(){ show("box"); };
 const pocketList = document.getElementById("pocketList");
-If (pocketList) pocketList.addEventListener("click", function(e){
+if (pocketList) pocketList.addEventListener("click", function(e){
   const btn = e.target.closest("[data-sell]");
   if (!btn) return;
   const s = state();
@@ -358,7 +358,7 @@ function settle(winner) {
   showWin(winner, false);
 }
 const spinBtn = document.getElementById("spinBtn");
-If (spinBtn) spinBtn.onclick = function(){
+if (spinBtn) spinBtn.onclick = function(){
   const s = state();
   if (s.spinning) return;
   const chip = selectedChip();
@@ -382,7 +382,7 @@ If (spinBtn) spinBtn.onclick = function(){
   });
 };
 const demoBtn = document.getElementById("demoBtn");
-If (demoBtn) demoBtn.onclick = function(){
+if (demoBtn) demoBtn.onclick = function(){
   if (state().spinning) return;
   const prizes = prizesFor(selectedChip());
   const winner = pickPrize(prizes);
@@ -390,7 +390,12 @@ If (demoBtn) demoBtn.onclick = function(){
   runSpin(winner, prizes, function(){ showWin(winner, true); });
 };
 const winClose = document.getElementById("winClose");
-If (winClose) winClose.onclick = function(){ document.getElementById("winPop").classList.remove("show"); };
+if (winClose) winClose.onclick = function(){ document.getElementById("winPop").classList.remove("show"); };
+(function sharpenCards(){
+  const s = document.createElement("style");
+  s.textContent = ".reel-wrap.spinning .tile,.tile,.art,.art-foil,.art-crown{filter:none!important;-webkit-filter:none!important}.tile{flex:0 0 140px;height:188px;transform:translateZ(0);backface-visibility:hidden}.art{width:96px;height:96px;flex:0 0 96px}.reel{transform:translate3d(0,0,0)}";
+  document.head.appendChild(s);
+})();
 paintChips();
 paintOwned();
 paintOdds();
