@@ -396,6 +396,29 @@ if (winClose) winClose.onclick = function(){ document.getElementById("winPop").c
   s.textContent = ".reel-wrap.spinning .tile,.tile,.art,.art-foil,.art-crown{filter:none!important;-webkit-filter:none!important}.tile{flex:0 0 140px;height:188px;transform:translateZ(0);backface-visibility:hidden}.art{width:96px;height:96px;flex:0 0 96px}.reel{transform:translate3d(0,0,0)}";
   document.head.appendChild(s);
 })();
+function giveDemoCredit(force) {
+  const gate = document.getElementById("gate");
+  if (gate) gate.classList.add("hidden");
+  const s = store();
+  if (force || !s.demo10) {
+    patch({ credit: Number(s.credit || 0) + 10, demo10: true });
+    toast("$10 demo credit loaded");
+  }
+  paintCredit();
+}
+(function setupDemo(){
+  const row = document.querySelector(".chiprow");
+  if (row && !document.getElementById("demoCreditBtn")) {
+    const b = document.createElement("button");
+    b.id = "demoCreditBtn";
+    b.className = "ghost";
+    b.type = "button";
+    b.textContent = "Add $10 demo credit";
+    b.onclick = function(){ giveDemoCredit(true); };
+    row.appendChild(b);
+  }
+  giveDemoCredit(/[?&]demo=1/.test(location.search) || !store().demo10);
+})();
 paintChips();
 paintOwned();
 paintOdds();
