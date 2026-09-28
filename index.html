@@ -4,11 +4,160 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Broke Legend — Los Angeles</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,600;1,700&family=Oswald:wght@500;600&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,700&family=Oswald:wght@600&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--cream:#f6efe2;--gold:#e2b657}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;color:var(--cream);font-family:"DM Sans",system-ui,sans-serif}
+body{background:linear-gradient(180deg,#2a1020 0%,#8a2a2a 18%,#ff6a3d 38%,#f0a35a 52%,#1b2a3a 72%,#0b0c12 100%);min-height:100vh}
+.sky{position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 50% 42%,rgba(255,220,140,.35),transparent 28%)}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:rgba(12,8,10,.72);backdrop-filter:blur(16px);border-bottom:1px solid rgba(226,182,87,.25)}
+.navlinks{display:flex;gap:2px;flex-wrap:wrap}
+.topbar a{color:var(--cream);font:inherit;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;padding:10px 11px;border-radius:999px}
+.topbar a.active,.topbar a:hover{color:var(--gold);background:rgba(226,182,87,.12)}
+.creditpill{font-size:12px;font-weight:700;color:#1a120c;background:var(--gold);border-radius:999px;padding:8px 12px}
+.wrap{display:flex;justify-content:center;padding:28px 14px 72px;position:relative;z-index:1}
+.stage{width:min(920px,100%)}
+.hero{text-align:center}
+.eyebrow{font-family:Oswald,sans-serif;letter-spacing:.32em;font-size:13px;color:var(--gold)}
+h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(44px,12vw,92px);line-height:1.02;margin:10px 0 6px}
+h1 em{font-style:italic;color:#fff4d6}
+.headline{max-width:26em;margin:18px auto 22px;color:#f3e6d2;font-size:17px;line-height:1.55}
+.how{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:0 0 22px}
+.how span{font-size:12px;color:#ead9c0;background:rgba(10,8,10,.35);border:1px solid rgba(243,230,210,.16);border-radius:999px;padding:7px 12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 16px;justify-items:center}
+@media(min-width:720px){.grid{grid-template-columns:repeat(4,1fr)}}
+.crate{width:min(100%,210px);border:0;background:0;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;padding:8px 4px 0}
+.crate.on .box3d{transform:translateY(-8px) rotate(-2deg);outline:3px solid rgba(226,182,87,.7)}
+.crate:hover .box3d{transform:translateY(-6px)}
+.box3d{width:150px;height:118px;position:relative;border-radius:10px 10px 8px 8px;background:var(--body);box-shadow:0 16px 18px rgba(0,0,0,.32),inset 0 0 0 2px rgba(255,255,255,.08);transition:transform .16s ease}
+.box3d:before{content:"";position:absolute;left:8%;right:8%;top:-16px;height:22px;border-radius:8px 8px 2px 2px;background:var(--lid)}
+.box3d:after{content:"";position:absolute;left:50%;top:42%;width:22px;height:22px;border-radius:50%;transform:translate(-50%,-50%);background:var(--latch)}
+.boxmark{position:absolute;inset:auto 10px 12px;text-align:center;font-family:"Playfair Display",Georgia,serif;font-size:15px;color:var(--inkface)}
+.price{margin-top:10px;font-family:Oswald,sans-serif;letter-spacing:.12em;font-size:18px}
+.place{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#d8cbb6;margin-top:2px}
+.have{font-size:11px;color:var(--gold);min-height:14px;margin-top:4px}
+.b1{--body:#c9a36a;--lid:#8a6a3a;--latch:#3a2a16;--inkface:#1a120c}
+.b5{--body:linear-gradient(135deg,#7a3cff,#2ad4c8 55%,#f0c);--lid:#2a1848;--latch:#e8f7ff;--inkface:#fff}
+.b10{--body:#1d3a78;--lid:#0e1630;--latch:#f0c14b;--inkface:#f6efe2}
+.b25{--body:#1f6b4a;--lid:#0c2c1c;--latch:#bfe3c8;--inkface:#f6efe2}
+.b50{--body:linear-gradient(160deg,#ff6a3d,#c23b6e);--lid:#4a1420;--latch:#ffd27a;--inkface:#fff4d6}
+.b100{--body:#f4eee3;--lid:#8fbfa8;--latch:#1a120c;--inkface:#1a120c}
+.b1000{--body:#111;--lid:#e2b657;--latch:#fff4d6;--inkface:#f6e7b0}
+.b1000 .box3d{width:170px;height:128px;box-shadow:0 18px 22px rgba(0,0,0,.4),0 0 0 1px #e2b657}
+.chiprow{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.cta{border:0;border-radius:16px;padding:15px 18px;font:inherit;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:#1a120c;cursor:pointer}
+.cta:disabled{opacity:.45;cursor:not-allowed}
+.ghost{border:1px solid rgba(226,182,87,.3);background:0;color:var(--cream);border-radius:16px;padding:13px 16px;font:inherit;cursor:pointer}
+.owned{text-align:center;color:#ead9c0;font-size:13px;margin-top:14px}
+.panel{display:none}.panel.show{display:block}
+.gate{position:fixed;inset:0;z-index:50;background:rgba(12,8,10,.88);display:flex;align-items:center;justify-content:center;padding:20px}
+.gate.hidden{display:none}
+.gatebox{width:min(420px,100%);border:1px solid rgba(226,182,87,.28);background:#1a1216;border-radius:24px;padding:28px 22px}
+.gatebox input{width:100%;margin:0 0 10px;background:#120c10;border:1px solid rgba(226,182,87,.28);color:#fff;border-radius:14px;padding:12px;font:inherit}
+.felt{margin:8px 0 18px;background:#17331f;border:10px solid #2a1a12;border-radius:18px;padding:16px 10px 18px}
+.reel-wrap{position:relative;overflow:hidden;height:126px;margin-top:18px;border-radius:8px;background:rgba(0,0,0,.28)}
+.marker{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--gold);transform:translateX(-50%);z-index:3}
+.reel{display:flex;height:100%;align-items:center}
+.tile{flex:0 0 108px;height:98px;margin:0 6px;border-radius:8px;background:#f7f0e2;color:#1a120c;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px}
+.tile.card,.tile.jack{background:#1d1520;color:#f6efe2;border:1px solid #e2b657}
+.felt-actions{display:flex;justify-content:center;margin-top:14px}
+.result,.sub,.foot{text-align:center;color:#d8cbb6;margin-top:10px}
+h2{font-family:"Playfair Display",Georgia,serif;font-size:32px;text-align:center;margin:8px 0}
+.oddsbox{margin-top:16px;background:rgba(10,8,10,.38);border-radius:14px;padding:12px 14px}
+.oddsbox div{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;border-bottom:1px solid rgba(243,230,210,.08)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--gold);color:#1a120c;padding:10px 16px;border-radius:999px;opacity:0;font-weight:700;z-index:60}
+.toast.show{opacity:1}
+.row{display:flex;justify-content:space-between;gap:12px;padding:14px 6px;border-bottom:1px solid rgba(243,230,210,.12)}
+.sell{border:1px solid rgba(226,182,87,.35);background:#24180f;color:var(--gold);border-radius:999px;padding:7px 12px;font:inherit;cursor:pointer}
+</style>
 </head>
 <body>
-<p>Use local build</p>
-<script src="auth.js"></script>
+<div class="sky"></div>
+<nav class="topbar">
+  <div class="navlinks">
+    <a href="#chips" class="active" data-tab="chips">Boxes</a>
+    <a href="#box" data-tab="box">Open</a>
+    <a href="#pocket" data-tab="pocket">Pocket</a>
+  </div>
+  <div class="creditpill" id="creditPill">Credit $0.00</div>
+</nav>
+<div class="gate" id="gate">
+  <div class="gatebox">
+    <p class="eyebrow">Table pass</p>
+    <h2>Sign up</h2>
+    <p class="sub">Pick a name. Then the seven boxes come up.</p>
+    <form id="authForm">
+      <input id="authUser" type="text" placeholder="Username" maxlength="16" />
+      <input id="authPass" type="password" placeholder="Password" minlength="6" />
+      <p id="gateErr" style="color:#ff8aa1;min-height:18px;text-align:center"></p>
+      <button class="cta" type="submit" style="width:100%">Create account</button>
+    </form>
+  </div>
+</div>
+<div class="wrap"><main class="stage">
+  <section id="chips" class="panel show">
+    <div class="hero">
+      <p class="eyebrow">Los Angeles</p>
+      <h1>Broke <em>Legend</em></h1>
+      <p class="headline">Seven boxes. Price under each lid. Pay with a card or spend store credit you already won.</p>
+    </div>
+    <div class="how"><span>1. Pick a box</span><span>2. Pay or use credit</span><span>3. It spins</span></div>
+    <div class="grid" id="chipGrid">
+      <button type="button" class="crate b1 on" data-amt="1"><div class="box3d"><div class="boxmark">Penny box</div></div><div class="price">$1</div><div class="place">Los Angeles</div><div class="have"></div></button>
+      <button type="button" class="crate b5" data-amt="5"><div class="box3d"><div class="boxmark">Holo box</div></div><div class="price">$5</div><div class="place">Los Angeles</div><div class="have"></div></button>
+      <button type="button" class="crate b10" data-amt="10"><div class="box3d"><div class="boxmark">Westside box</div></div><div class="price">$10</div><div class="place">Westside</div><div class="have"></div></button>
+      <button type="button" class="crate b25" data-amt="25"><div class="box3d"><div class="boxmark">Venice box</div></div><div class="price">$25</div><div class="place">Venice</div><div class="have"></div></button>
+      <button type="button" class="crate b50" data-amt="50"><div class="box3d"><div class="boxmark">Sunset box</div></div><div class="price">$50</div><div class="place">Sunset</div><div class="have"></div></button>
+      <button type="button" class="crate b100" data-amt="100"><div class="box3d"><div class="boxmark">Alt-art box</div></div><div class="price">$100</div><div class="place">Los Angeles</div><div class="have"></div></button>
+      <button type="button" class="crate b1000" data-amt="1000"><div class="box3d"><div class="boxmark">Crown box</div></div><div class="price">$1,000</div><div class="place">Hollywood</div><div class="have"></div></button>
+    </div>
+    <p class="owned" id="ownedLine">No boxes waiting to open.</p>
+    <div class="chiprow">
+      <button class="cta" id="buyCredit" type="button">Buy with credit</button>
+      <button class="cta" id="buyChip" type="button">Buy with card</button>
+      <button class="ghost" id="paidBtn" type="button">I already paid</button>
+      <button class="ghost" id="toBox" type="button">Open what I have</button>
+    </div>
+  </section>
+  <section id="box" class="panel">
+    <p class="eyebrow" id="boxEyebrow">The shoe</p>
+    <h2 id="boxTitle">Unlock the box</h2>
+    <p class="sub" id="boxSub">Each box has its own reel. Credit can buy another box.</p>
+    <div class="felt">
+      <div class="reel-wrap"><div class="marker"></div><div class="reel" id="reel"></div></div>
+      <div class="felt-actions"><button class="cta" id="spinBtn" type="button">Unlock & spin</button></div>
+      <div class="result" id="spinResult">Choose a box first.</div>
+    </div>
+    <div class="oddsbox" id="oddsBox"></div>
+  </section>
+  <section id="pocket" class="panel">
+    <h2>Your pocket</h2>
+    <p class="sub">Cards sell back as store credit. Spend that credit on another box.</p>
+    <div id="pocketList"></div>
+  </section>
+  <p class="foot">18+. A box buys one open. Credit buys more boxes.</p>
+</main></div>
+<div class="toast" id="toast">Copied</div>
 <script src="site.js"></script>
+<script>
+(function(){
+  const gate=document.getElementById("gate");
+  const form=document.getElementById("authForm");
+  function session(){try{return JSON.parse(localStorage.getItem("bl_session")||"null")}catch(e){return null}}
+  if(session()) gate.classList.add("hidden");
+  form.onsubmit=function(e){
+    e.preventDefault();
+    const user=String(document.getElementById("authUser").value||"").trim().toLowerCase();
+    const pass=document.getElementById("authPass").value||"";
+    const err=document.getElementById("gateErr");
+    if(!/^[a-z0-9_]{3,16}$/.test(user)){err.textContent="Username: 3-16 letters, numbers, _";return;}
+    if(pass.length<6){err.textContent="Password needs 6+ characters";return;}
+    localStorage.setItem("bl_session",JSON.stringify({user}));
+    localStorage.setItem("bl_name",user);
+    gate.classList.add("hidden");
+  };
+})();
+</script>
 </body>
 </html>
