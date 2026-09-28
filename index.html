@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Broke Legend — Los Angeles</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,700&family=Oswald:wght@600&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,700&family=Oswald:wght@500;700&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
 :root{--cream:#f6efe2;--gold:#e2b657}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -17,7 +17,7 @@ body{background:linear-gradient(180deg,#2a1020 0%,#8a2a2a 18%,#ff6a3d 38%,#f0a35
 .topbar a.active,.topbar a:hover{color:var(--gold);background:rgba(226,182,87,.12)}
 .creditpill{font-size:12px;font-weight:700;color:#1a120c;background:var(--gold);border-radius:999px;padding:8px 12px}
 .wrap{display:flex;justify-content:center;padding:28px 14px 72px;position:relative;z-index:1}
-.stage{width:min(920px,100%)}
+.stage{width:min(980px,100%)}
 .hero{text-align:center}
 .eyebrow{font-family:Oswald,sans-serif;letter-spacing:.32em;font-size:13px;color:var(--gold)}
 h1{font-family:"Playfair Display",Georgia,serif;font-size:clamp(44px,12vw,92px);line-height:1.02;margin:10px 0 6px}
@@ -25,26 +25,30 @@ h1 em{font-style:italic;color:#fff4d6}
 .headline{max-width:26em;margin:18px auto 22px;color:#f3e6d2;font-size:17px;line-height:1.55}
 .how{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:0 0 22px}
 .how span{font-size:12px;color:#ead9c0;background:rgba(10,8,10,.35);border:1px solid rgba(243,230,210,.16);border-radius:999px;padding:7px 12px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 16px;justify-items:center}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 16px;justify-items:center}
 @media(min-width:720px){.grid{grid-template-columns:repeat(4,1fr)}}
-.crate{width:min(100%,210px);border:0;background:0;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;padding:8px 4px 0}
-.crate.on .box3d{transform:translateY(-8px) rotate(-2deg);outline:3px solid rgba(226,182,87,.7)}
+.crate{width:min(100%,210px);border:0;background:0;color:inherit;font:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;padding:18px 4px 0}
+.crate.on .box3d{transform:translateY(-8px) rotate(-2deg)}
 .crate:hover .box3d{transform:translateY(-6px)}
-.box3d{width:150px;height:118px;position:relative;border-radius:10px 10px 8px 8px;background:var(--body);box-shadow:0 16px 18px rgba(0,0,0,.32),inset 0 0 0 2px rgba(255,255,255,.08);transition:transform .16s ease}
-.box3d:before{content:"";position:absolute;left:8%;right:8%;top:-16px;height:22px;border-radius:8px 8px 2px 2px;background:var(--lid)}
-.box3d:after{content:"";position:absolute;left:50%;top:42%;width:22px;height:22px;border-radius:50%;transform:translate(-50%,-50%);background:var(--latch)}
-.boxmark{position:absolute;inset:auto 10px 12px;text-align:center;font-family:"Playfair Display",Georgia,serif;font-size:15px;color:var(--inkface)}
-.price{margin-top:10px;font-family:Oswald,sans-serif;letter-spacing:.12em;font-size:18px}
+.box3d{width:154px;height:122px;position:relative;transition:transform .16s ease}
+.boxbody{position:absolute;inset:18px 8px 0;border-radius:8px;background:var(--body);box-shadow:0 18px 20px rgba(0,0,0,.38),inset 0 0 0 2px rgba(255,255,255,.12);overflow:hidden}
+.boxbody:after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(255,255,255,.22) 50%,transparent 60%);transform:translateX(-60%)}
+.crate:hover .boxbody:after{animation:shine .7s ease}
+@keyframes shine{to{transform:translateX(60%)}}
+.lid{position:absolute;left:6px;right:6px;top:0;height:28px;border-radius:8px 8px 3px 3px;background:var(--lid);box-shadow:0 6px 0 rgba(0,0,0,.25);z-index:2}
+.ribbon{position:absolute;left:50%;top:10px;bottom:8px;width:16px;transform:translateX(-50%);background:var(--latch);opacity:.85;z-index:3}
+.seal{position:absolute;left:50%;top:42%;width:26px;height:26px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 35% 30%,#fff7,transparent 40%),var(--latch);box-shadow:0 0 0 3px rgba(0,0,0,.2);z-index:4}
+.boxmark{position:absolute;left:10px;right:10px;bottom:10px;text-align:center;font-family:"Playfair Display",Georgia,serif;font-size:14px;color:var(--inkface);z-index:4}
+.price{margin-top:12px;font-family:Oswald,sans-serif;letter-spacing:.12em;font-size:18px}
 .place{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#d8cbb6;margin-top:2px}
 .have{font-size:11px;color:var(--gold);min-height:14px;margin-top:4px}
-.b1{--body:#c9a36a;--lid:#8a6a3a;--latch:#3a2a16;--inkface:#1a120c}
+.b1{--body:#c9a36a;--lid:#8a6a3a;--latch:#6b2b1a;--inkface:#1a120c}
 .b5{--body:linear-gradient(135deg,#7a3cff,#2ad4c8 55%,#f0c);--lid:#2a1848;--latch:#e8f7ff;--inkface:#fff}
 .b10{--body:#1d3a78;--lid:#0e1630;--latch:#f0c14b;--inkface:#f6efe2}
 .b25{--body:#1f6b4a;--lid:#0c2c1c;--latch:#bfe3c8;--inkface:#f6efe2}
 .b50{--body:linear-gradient(160deg,#ff6a3d,#c23b6e);--lid:#4a1420;--latch:#ffd27a;--inkface:#fff4d6}
 .b100{--body:#f4eee3;--lid:#8fbfa8;--latch:#1a120c;--inkface:#1a120c}
 .b1000{--body:#111;--lid:#e2b657;--latch:#fff4d6;--inkface:#f6e7b0}
-.b1000 .box3d{width:170px;height:128px;box-shadow:0 18px 22px rgba(0,0,0,.4),0 0 0 1px #e2b657}
 .chiprow{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .cta{border:0;border-radius:16px;padding:15px 18px;font:inherit;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--gold);color:#1a120c;cursor:pointer}
 .cta:disabled{opacity:.45;cursor:not-allowed}
@@ -55,21 +59,67 @@ h1 em{font-style:italic;color:#fff4d6}
 .gate.hidden{display:none}
 .gatebox{width:min(420px,100%);border:1px solid rgba(226,182,87,.28);background:#1a1216;border-radius:24px;padding:28px 22px}
 .gatebox input{width:100%;margin:0 0 10px;background:#120c10;border:1px solid rgba(226,182,87,.28);color:#fff;border-radius:14px;padding:12px;font:inherit}
-.felt{margin:8px 0 18px;background:#17331f;border:10px solid #2a1a12;border-radius:18px;padding:16px 10px 18px}
-.reel-wrap{position:relative;overflow:hidden;height:126px;margin-top:18px;border-radius:8px;background:rgba(0,0,0,.28)}
-.marker{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--gold);transform:translateX(-50%);z-index:3}
-.reel{display:flex;height:100%;align-items:center}
-.tile{flex:0 0 108px;height:98px;margin:0 6px;border-radius:8px;background:#f7f0e2;color:#1a120c;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8px}
-.tile.card,.tile.jack{background:#1d1520;color:#f6efe2;border:1px solid #e2b657}
-.felt-actions{display:flex;justify-content:center;margin-top:14px}
+.felt{margin:8px 0 18px;background:radial-gradient(circle at 50% 20%,#245236,#102216 70%);border:12px solid #2a1a12;border-radius:18px;padding:18px 8px 18px;position:relative}
+.reel-wrap{position:relative;overflow:hidden;height:214px;margin-top:8px;border-radius:10px;background:linear-gradient(90deg,#05070a,#12151c 18%,#12151c 82%,#05070a);box-shadow:inset 0 0 40px #000}
+.reel-wrap.spinning .tile{filter:blur(1.2px) saturate(1.15)}
+.fadeL,.fadeR{position:absolute;top:0;bottom:0;width:72px;z-index:4;pointer-events:none}
+.fadeL{left:0;background:linear-gradient(90deg,#05070a,transparent)}
+.fadeR{right:0;background:linear-gradient(270deg,#05070a,transparent)}
+.marker{position:absolute;left:50%;top:0;bottom:0;width:3px;background:linear-gradient(#fff4d6,var(--gold),#fff4d6);transform:translateX(-50%);z-index:5;box-shadow:0 0 18px #e2b657}
+.marker:before,.marker:after{content:"";position:absolute;left:50%;transform:translateX(-50%);border-left:8px solid transparent;border-right:8px solid transparent}
+.marker:before{top:0;border-top:12px solid var(--gold)}
+.marker:after{bottom:0;border-bottom:12px solid var(--gold)}
+.reel{display:flex;height:100%;align-items:center;will-change:transform}
+.tile{flex:0 0 132px;height:178px;margin:0 8px;border-radius:12px;position:relative;overflow:hidden;background:#1a1c24;border:2px solid #3a3f4d;box-shadow:0 10px 16px rgba(0,0,0,.35);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:10px 8px 12px}
+.tile.win{transform:scale(1.06);box-shadow:0 0 0 3px #fff4d6,0 0 28px var(--glow,#e2b657)}
+.tile .band{position:absolute;left:0;right:0;top:0;height:6px;background:var(--rarity)}
+.art{width:86px;height:86px;margin:18px 0 10px;position:relative}
+.tag{font-family:Oswald,sans-serif;letter-spacing:.12em;font-size:13px;text-transform:uppercase;color:#f6efe2;text-align:center}
+.kind-common{--rarity:#8b909a;--glow:#9aa0aa;border-color:#4a5160}
+.kind-mid{--rarity:#3aa0ff;--glow:#3aa0ff;border-color:#2a6aa8;background:linear-gradient(#152033,#0e1624)}
+.kind-card{--rarity:#b44cff;--glow:#c87cff;border-color:#6b2aa8;background:linear-gradient(#23142f,#140c1c)}
+.kind-jack{--rarity:#e2b657;--glow:#ffe08a;border-color:#e2b657;background:linear-gradient(#2a2210,#120e08)}
+.art-coin{border-radius:50%;background:radial-gradient(circle at 32% 28%,#ffe7b0,#c9842a 45%,#7a4a12);box-shadow:inset 0 0 0 6px #e0a84a,0 8px 0 #5a3208}
+.art-coin:after{content:"¢";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 34px/1 "Playfair Display",serif;color:#6a3a10}
+.art-cash{background:linear-gradient(#1f7a46,#0d3d24);border-radius:6px;box-shadow:8px 8px 0 #0a2a18,-8px 8px 0 #145c34}
+.art-cash:before{content:"$";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 40px/1 "Playfair Display",serif;color:#d7f5e2}
+.art-sticker{background:conic-gradient(#ff6a3d,#f0c14b,#2ad4c8,#7a3cff,#ff6a3d);border-radius:14px;transform:rotate(-8deg)}
+.art-sticker:after{content:"★";position:absolute;inset:8px;background:#111;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:34px;color:#f0c14b}
+.art-card{background:linear-gradient(160deg,#f7f0e2,#d9c7a2);border-radius:8px;box-shadow:0 0 0 3px #1a120c}
+.art-card:before{content:"A";position:absolute;left:8px;top:6px;font:700 16px/1 "Playfair Display",serif;color:#8a1a22}
+.art-card:after{content:"♠";position:absolute;right:8px;bottom:4px;font-size:22px;color:#111}
+.art-foil{background:linear-gradient(135deg,#7a3cff,#2ad4c8 40%,#ff4fd8 70%,#f0c14b);border-radius:8px;animation:holo 2.4s linear infinite}
+@keyframes holo{to{filter:hue-rotate(40deg)}}
+.art-foil:after{content:"✦";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff}
+.art-slab{background:#cfe8ff;border-radius:4px;box-shadow:inset 0 0 0 8px rgba(180,210,230,.7),0 0 0 2px #8ab}
+.art-slab:after{content:"";position:absolute;inset:16px 18px;background:linear-gradient(#f7f0e2,#d9c7a2);border-radius:3px}
+.art-pin{background:radial-gradient(circle at 40% 30%,#fff,#d0d6e0);border-radius:50%;box-shadow:0 8px 0 #333}
+.art-pin:after{content:"✦";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#1d3a78;font-size:32px}
+.art-cap{width:96px;height:70px;margin-top:28px;background:#1a120c;border-radius:50% 50% 8px 8px;box-shadow:0 10px 0 #0b0706}
+.art-cap:before{content:"";position:absolute;left:-10px;right:18px;bottom:8px;height:12px;background:#111;border-radius:8px}
+.art-jacket{width:78px;background:linear-gradient(#2a1a12,#0e0908);clip-path:polygon(10% 8%,90% 8%,100% 100%,0 100%)}
+.art-jacket:after{content:"";position:absolute;left:50%;top:10%;bottom:0;width:2px;background:#e2b657}
+.art-crown{background:conic-gradient(from .2turn,#fff4d6,#e2b657,#8a6a18,#fff4d6);clip-path:polygon(8% 78%,20% 18%,35% 58%,50% 8%,65% 58%,80% 18%,92% 78%,78% 92%,22% 92%)}
+.art-zippo{background:linear-gradient(#d7dde6,#8a93a3);border-radius:6px;width:54px}
+.art-zippo:before{content:"";position:absolute;left:8px;right:8px;top:10px;height:8px;background:#333;border-radius:2px}
+.art-patch{background:#17331f;border:4px solid #e2b657;border-radius:50%}
+.art-patch:after{content:"BL";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:700 18px Oswald,sans-serif;color:#e2b657}
+.felt-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:16px}
 .result,.sub,.foot{text-align:center;color:#d8cbb6;margin-top:10px}
 h2{font-family:"Playfair Display",Georgia,serif;font-size:32px;text-align:center;margin:8px 0}
 .oddsbox{margin-top:16px;background:rgba(10,8,10,.38);border-radius:14px;padding:12px 14px}
-.oddsbox div{display:flex;justify-content:space-between;font-size:14px;padding:4px 0;border-bottom:1px solid rgba(243,230,210,.08)}
+.oddsrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(243,230,210,.08);font-size:14px}
+.oddsrow .mini{width:28px;height:28px;border-radius:6px;flex:0 0 28px}
+.oddsrow span:last-child{margin-left:auto;color:var(--gold)}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--gold);color:#1a120c;padding:10px 16px;border-radius:999px;opacity:0;font-weight:700;z-index:60}
 .toast.show{opacity:1}
 .row{display:flex;justify-content:space-between;gap:12px;padding:14px 6px;border-bottom:1px solid rgba(243,230,210,.12)}
 .sell{border:1px solid rgba(226,182,87,.35);background:#24180f;color:var(--gold);border-radius:999px;padding:7px 12px;font:inherit;cursor:pointer}
+.winpop{position:fixed;inset:0;background:rgba(6,4,6,.72);display:none;align-items:center;justify-content:center;z-index:70;padding:20px}
+.winpop.show{display:flex}
+.winbox{width:min(360px,100%);background:#141018;border:1px solid var(--gold);border-radius:22px;padding:26px 20px;text-align:center}
+.winbox .art{margin:8px auto 14px}
+.crate.on .lid{box-shadow:0 0 0 2px rgba(226,182,87,.55),0 6px 0 rgba(0,0,0,.25)}
 </style>
 </head>
 <body>
@@ -104,13 +154,13 @@ h2{font-family:"Playfair Display",Georgia,serif;font-size:32px;text-align:center
     </div>
     <div class="how"><span>1. Pick a box</span><span>2. Pay or use credit</span><span>3. It spins</span></div>
     <div class="grid" id="chipGrid">
-      <button type="button" class="crate b1 on" data-amt="1"><div class="box3d"><div class="boxmark">Penny box</div></div><div class="price">$1</div><div class="place">Los Angeles</div><div class="have"></div></button>
-      <button type="button" class="crate b5" data-amt="5"><div class="box3d"><div class="boxmark">Holo box</div></div><div class="price">$5</div><div class="place">Los Angeles</div><div class="have"></div></button>
-      <button type="button" class="crate b10" data-amt="10"><div class="box3d"><div class="boxmark">Westside box</div></div><div class="price">$10</div><div class="place">Westside</div><div class="have"></div></button>
-      <button type="button" class="crate b25" data-amt="25"><div class="box3d"><div class="boxmark">Venice box</div></div><div class="price">$25</div><div class="place">Venice</div><div class="have"></div></button>
-      <button type="button" class="crate b50" data-amt="50"><div class="box3d"><div class="boxmark">Sunset box</div></div><div class="price">$50</div><div class="place">Sunset</div><div class="have"></div></button>
-      <button type="button" class="crate b100" data-amt="100"><div class="box3d"><div class="boxmark">Alt-art box</div></div><div class="price">$100</div><div class="place">Los Angeles</div><div class="have"></div></button>
-      <button type="button" class="crate b1000" data-amt="1000"><div class="box3d"><div class="boxmark">Crown box</div></div><div class="price">$1,000</div><div class="place">Hollywood</div><div class="have"></div></button>
+      <button type="button" class="crate b1 on" data-amt="1"><div class="box3d"><div class="lid"></div><div class="boxbody"></div><div class="ribbon"></div><div class="seal"></div><div class="boxmark">Penny box</div></div><div class="price">$1</div><div class="place">Los Angeles</div><div class="have"></div></button>
+      <button type="button" class="crate b5" data-amt="5"><div class="box3d"><div class="lid"></div><div class="boxbody"></div><div class="ribbon"></div><div class="seal"></div><div class="boxmark">Holo box</div></div><div class="price">$5</div><div class="place">Los Angeles</div><div class="have"></div></button>
+      <button type="button" class="crate b10" data-amt="10"><div class="box3d"><div class="lid"></div><div class="boxbody"></div><div class="ribbon"></div><div class="seal"></div><div class="boxmark">Westside box</div></div><div class="price">$10</div><div class="place">Westside</div><div class="have"></div></button>
+      <button type="button" class="crate b25" data-amt="25"><div class="box3d"><div class="lid"></div><div class="boxbody"></div><div class="ribbon"></div><div class="seal"></div><div class="boxmark">Venice box</div></div><div class="price">$25</div><div class="place">Venice</div><div class="have"></div></button>
+      <button type="button" class="crate b50" data-amt="50"><div class="box3d"><div class="lid"></div><div class="boxbody"></div><div class="ribbon"></div><div class="seal"></div><div class="boxmark">Sunset box</div></div><div class="price">$50</div><div class="place">Sunset</div><div class="have"></div></button>
+      <button type="button" class="crate b100" data-amt="100"><div class="box3d"><div class="lid"></div><div class="boxbody"></div><div class="ribbon"></div><div class="seal"></div><div class="boxmark">Alt-art box</div></div><div class="price">$100</div><div class="place">Los Angeles</div><div class="have"></div></button>
+      <button type="button" class="crate b1000" data-amt="1000"><div class="box3d"><div class="lid"></div><div class="boxbody"></div><div class="ribbon"></div><div class="seal"></div><div class="boxmark">Crown box</div></div><div class="price">$1,000</div><div class="place">Hollywood</div><div class="have"></div></button>
     </div>
     <p class="owned" id="ownedLine">No boxes waiting to open.</p>
     <div class="chiprow">
@@ -123,10 +173,17 @@ h2{font-family:"Playfair Display",Georgia,serif;font-size:32px;text-align:center
   <section id="box" class="panel">
     <p class="eyebrow" id="boxEyebrow">The shoe</p>
     <h2 id="boxTitle">Unlock the box</h2>
-    <p class="sub" id="boxSub">Each box has its own reel. Credit can buy another box.</p>
+    <p class="sub" id="boxSub">The reel shows the item, not a price tag.</p>
     <div class="felt">
-      <div class="reel-wrap"><div class="marker"></div><div class="reel" id="reel"></div></div>
-      <div class="felt-actions"><button class="cta" id="spinBtn" type="button">Unlock & spin</button></div>
+      <div class="reel-wrap" id="reelWrap">
+        <div class="fadeL"></div><div class="fadeR"></div>
+        <div class="marker"></div>
+        <div class="reel" id="reel"></div>
+      </div>
+      <div class="felt-actions">
+        <button class="cta" id="spinBtn" type="button">Unlock & spin</button>
+        <button class="ghost" id="demoBtn" type="button">Preview spin</button>
+      </div>
       <div class="result" id="spinResult">Choose a box first.</div>
     </div>
     <div class="oddsbox" id="oddsBox"></div>
@@ -138,6 +195,15 @@ h2{font-family:"Playfair Display",Georgia,serif;font-size:32px;text-align:center
   </section>
   <p class="foot">18+. A box buys one open. Credit buys more boxes.</p>
 </main></div>
+<div class="winpop" id="winPop">
+  <div class="winbox">
+    <p class="eyebrow">Landed</p>
+    <div id="winArt"></div>
+    <h2 id="winName">Item</h2>
+    <p class="sub" id="winNote"></p>
+    <button class="cta" id="winClose" type="button" style="margin-top:12px">Keep going</button>
+  </div>
+</div>
 <div class="toast" id="toast">Copied</div>
 <script src="site.js"></script>
 <script>
