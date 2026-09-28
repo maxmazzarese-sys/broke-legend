@@ -5,7 +5,7 @@ const panels = {
   leaderboard: document.getElementById("leaderboard")
 };
 const tabs = document.querySelectorAll("[data-tab]");
-const shareUrl = location.origin.includes("localhost") ? "https://brokelegend.com" : location.origin;
+const shareUrl = location.href.split("#")[0];
 const CHECKOUT = {
   1: "https://whop.com/checkout/ch_T195O0GEqmnu5BD/",
   5: "https://whop.com/checkout/ch_RgTbYfHeBAf88dx/",
@@ -16,13 +16,13 @@ const CHECKOUT = {
   1000: "https://whop.com/checkout/ch_OkjMRrPtoXwsDMR/"
 };
 const CHIP_META = [
-  { amt: 1, cls: "c1", name: "Broke", place: "LOS ANGELES", box: "Penny box" },
-  { amt: 5, cls: "c5", name: "Legend", place: "LOS ANGELES", box: "Holo box" },
-  { amt: 10, cls: "c10", name: "Broke", place: "WESTSIDE", box: "Westside box" },
-  { amt: 25, cls: "c25", name: "Legend", place: "VENICE", box: "Venice box" },
-  { amt: 50, cls: "c50", name: "Broke", place: "SUNSET", box: "Sunset box" },
-  { amt: 100, cls: "c100", name: "Legend", place: "LOS ANGELES", box: "Alt-art box" },
-  { amt: 1000, cls: "c1000", name: "Crown", place: "HOLLYWOOD", box: "Crown box" }
+  { amt: 1, cls: "b1", name: "Penny box", place: "Los Angeles", box: "Penny box" },
+  { amt: 5, cls: "b5", name: "Holo box", place: "Los Angeles", box: "Holo box" },
+  { amt: 10, cls: "b10", name: "Westside box", place: "Westside", box: "Westside box" },
+  { amt: 25, cls: "b25", name: "Venice box", place: "Venice", box: "Venice box" },
+  { amt: 50, cls: "b50", name: "Sunset box", place: "Sunset", box: "Sunset box" },
+  { amt: 100, cls: "b100", name: "Alt-art box", place: "Los Angeles", box: "Alt-art box" },
+  { amt: 1000, cls: "b1000", name: "Crown box", place: "Hollywood", box: "Crown box" }
 ];
 const BOXES = {
   1: [
@@ -125,57 +125,15 @@ function show(tab) {
   Object.keys(panels).forEach(k => panels[k] && panels[k].classList.remove("show"));
   (panels[tab] || panels.chips).classList.add("show");
   tabs.forEach(el => el.classList.toggle("active", el.dataset.tab === tab));
-  if (tab === "leaderboard") paintBoard();
   if (tab === "box") paintOdds();
   if (tab === "pocket") paintPocket();
-  if (tab === "chips") paintOwned();
+  if (tab === "chips") paintChips();
 }
 tabs.forEach(el => el.addEventListener("click", e => {
   e.preventDefault();
   show(el.dataset.tab);
   history.replaceState(null, "", "#" + el.dataset.tab);
 }));
-function keyName(s) { return String(s || "").trim().toLowerCase(); }
-function uniq(list) {
-  const map = {};
-  (list || []).forEach(p => {
-    const k = keyName(p.name);
-    if (!k) return;
-    const amt = Number(p.amt || 0);
-    if (!map[k] || amt > map[k].amt) map[k] = { name: p.name, amt };
-  });
-  return Object.values(map);
-}
-function donorList() {
-  let list = [];
-  try { list = JSON.parse(localStorage.getItem("bl_public_donors") || "[]"); } catch (e) { list = []; }
-  return uniq(list).sort((a, b) => b.amt - a.amt).slice(0, 20);
-}
-function saveDonors(list) { localStorage.setItem("bl_public_donors", JSON.stringify(uniq(list))); }
-function paintMeter() {
-  const throne = document.getElementById("throne");
-  const first = donorList()[0];
-  if (!throne) return;
-  if (first) throne.innerHTML = '<div class="seat">♛</div><h3>' + first.name + ' holds the throne</h3><p>$' + first.amt + ' \u00b7 the board finally blinked.</p>';
-  else throne.innerHTML = '<div class="seat">♛</div><h3>Seat 1 is empty</h3><p>First chip takes the Hollywood seat.</p>';
-}
-async function loadPublicBoard() {
-  try {
-    const res = await fetch("board.json?t=" + Date.now(), { cache: "no-store" });
-    if (!res.ok) return;
-    const data = await res.json();
-    if (Array.isArray(data.donors)) saveDonors(uniq(data.donors.concat(donorList())));
-  } catch (e) {}
-}
-function paintBoard() {
-  const donors = document.getElementById("boardDonors");
-  if (!donors) return;
-  const tips = donorList();
-  donors.innerHTML = tips.length
-    ? tips.map((d, i) => '<div class="row"><b>' + (i === 0 ? "♛ " : "") + (i + 1) + ". " + d.name + '</b><span>$' + d.amt + "</span></div>").join("") + '<p class="note">One seat per name. Board refreshes after each buy-in.</p>'
-    : '<div class="empty">Nobody yet. The crown is still on the table.</div>';
-  paintMeter();
-}
 function currentUser() {
   try {
     const s = JSON.parse(localStorage.getItem("bl_session") || "null");
@@ -183,62 +141,59 @@ function currentUser() {
   } catch (e) {}
   return localStorage.getItem("bl_name") || "";
 }
-function recordTip(amt) {
-  amt = Number(amt || 0); if (!amt) return;
-  const name = currentUser() || "Whale";
-  const list = donorList();
-  const k = keyName(name);
-  const prev = list.find(d => keyName(d.name) === k);
-  const next = prev ? Number(prev.amt) + amt : amt;
-  saveDonors([{ name: name, amt: next }].concat(list.filter(d => keyName(d.name) !== k)));
-  paintBoard(); paintMeter();
-}
 function selectedChip() {
   return CHIP_META.find(c => c.amt === state().selected) || CHIP_META[0];
 }
 function paintChips() {
   const grid = document.getElementById("chipGrid");
+  if (!grid) return;
   const sel = state().selected;
-  grid.innerHTML = CHIP_META.map(c =>
-    '<button type="button" class="chip ' + c.cls + (c.amt === sel ? " on" : "") + '" data-amt="' + c.amt + '">' +
-      '<span class="label"><em>' + c.name + '</em><small>' + c.place + '</small><b>' + (c.amt >= 1000 ? "$1K" : "$" + c.amt) + '</b></span>' +
-    '</button>'
-  ).join("");
+  const owned = state().owned || {};
+  grid.querySelectorAll("[data-amt]").forEach(btn => {
+    const amt = Number(btn.dataset.amt);
+    btn.classList.toggle("on", amt === sel);
+    const have = btn.querySelector(".have");
+    if (have) have.textContent = owned[amt] ? (owned[amt] + " ready") : "";
+  });
 }
 function paintOwned() {
   const owned = state().owned;
-  const bits = CHIP_META.map(c => (owned[c.amt] || 0) > 0 ? "$" + (c.amt >= 1000 ? "1K" : c.amt) + " \u00d7" + owned[c.amt] : "").filter(Boolean);
-  document.getElementById("ownedLine").textContent = bits.length ? ("On you: " + bits.join("   ")) : "No chips in your pocket yet.";
+  const bits = CHIP_META.map(c => (owned[c.amt] || 0) > 0 ? c.box + " ×" + owned[c.amt] : "").filter(Boolean);
+  const line = document.getElementById("ownedLine");
+  if (line) line.textContent = bits.length ? ("On you: " + bits.join("   ")) : "No boxes waiting to open.";
   paintCredit();
+  paintChips();
 }
 function paintCredit() {
-  document.getElementById("creditPill").textContent = "Credit " + money(state().credit);
+  const pill = document.getElementById("creditPill");
+  if (pill) pill.textContent = "Credit " + money(state().credit);
 }
 function paintOdds() {
   const chip = selectedChip();
   const prizes = prizesFor(chip);
-  const label = chip.box + " \u00b7 $" + (chip.amt >= 1000 ? "1,000" : chip.amt) + " chip";
   const eye = document.getElementById("boxEyebrow");
   const title = document.getElementById("boxTitle");
   const sub = document.getElementById("boxSub");
   if (eye) eye.textContent = chip.place;
   if (title) title.textContent = chip.box;
-  if (sub) sub.textContent = "This box only opens with the $" + (chip.amt >= 1000 ? "1,000" : chip.amt) + " " + chip.name + " chip. Cards and merch sell back as store credit.";
+  if (sub) sub.textContent = "This box opens after you buy it. Credit won here can buy another box.";
   const felt = document.querySelector(".felt");
   if (felt) felt.setAttribute("data-box", chip.box);
-  document.getElementById("oddsBox").innerHTML = "<p>" + label + "</p>" +
-    prizes.map(p => "<div><span>" + p.name + (p.sellOnly ? " \u00b7 sell only" : "") + "</span><span>" + p.chance + "%</span></div>").join("");
+  const odds = document.getElementById("oddsBox");
+  if (odds) odds.innerHTML = "<p>" + chip.box + " · $" + (chip.amt >= 1000 ? "1,000" : chip.amt) + "</p>" +
+    prizes.map(p => "<div><span>" + p.name + (p.sellOnly ? " · sell only" : "") + "</span><span>" + p.chance + "%</span></div>").join("");
   buildReel(prizes, prizes[0], 16);
 }
 function paintPocket() {
   const list = document.getElementById("pocketList");
+  if (!list) return;
   const pocket = state().pocket;
   if (!pocket.length) {
     list.innerHTML = '<div class="empty">Empty pocket. Pull a card and it lands here.</div>';
     return;
   }
   list.innerHTML = pocket.map((it, i) =>
-    '<div class="row"><div><b>' + it.name + '</b><div class="note" style="margin:4px 0 0;text-align:left">Sell-only \u00b7 ' + money(it.value) + ' store credit</div></div>' +
+    '<div class="row"><div><b>' + it.name + '</b><div class="note" style="margin:4px 0 0;text-align:left">Sell-only · ' + money(it.value) + ' store credit</div></div>' +
     '<button class="sell" data-sell="' + i + '">Sell it</button></div>'
   ).join("");
 }
@@ -250,6 +205,7 @@ function pickPrize(prizes) {
 }
 function buildReel(prizes, winner, copies) {
   const reel = document.getElementById("reel");
+  if (!reel) return { reel: reel, winIndex: 0 };
   const strip = [];
   for (let i = 0; i < copies; i++) strip.push(prizes[i % prizes.length]);
   const winIndex = copies - 5;
@@ -265,24 +221,61 @@ function addChip(amt, n) {
   const owned = Object.assign({}, state().owned);
   owned[amt] = (owned[amt] || 0) + (n || 1);
   patch({ owned: owned, selected: amt });
-  paintChips();
   paintOwned();
 }
-document.getElementById("chipGrid").addEventListener("click", e => {
+function setPending(amt) {
+  localStorage.setItem("bl_pending", JSON.stringify({ amt: Number(amt), at: Date.now() }));
+  sessionStorage.setItem("bl_pending_chip", String(amt));
+}
+function readPending() {
+  try { return JSON.parse(localStorage.getItem("bl_pending") || "null"); } catch (e) { return null; }
+}
+function clearPending() {
+  localStorage.removeItem("bl_pending");
+  sessionStorage.removeItem("bl_pending_chip");
+  sessionStorage.removeItem("bl_pending_tip");
+}
+const grid = document.getElementById("chipGrid");
+if (grid) grid.addEventListener("click", e => {
   const btn = e.target.closest("[data-amt]");
   if (!btn) return;
   patch({ selected: Number(btn.dataset.amt) });
   paintChips();
   paintOdds();
 });
-document.getElementById("buyChip").onclick = () => {
+const buyChip = document.getElementById("buyChip");
+if (buyChip) buyChip.onclick = () => {
   const chip = selectedChip();
-  sessionStorage.setItem("bl_pending_tip", String(chip.amt));
-  sessionStorage.setItem("bl_pending_chip", String(chip.amt));
-  location.href = CHECKOUT[chip.amt];
+  setPending(chip.amt);
+  const back = encodeURIComponent(location.href.split("#")[0] + "?tipped=1&amt=" + chip.amt);
+  location.href = CHECKOUT[chip.amt] + (CHECKOUT[chip.amt].indexOf("?") >= 0 ? "&" : "?") + "redirect=" + back;
 };
-document.getElementById("toBox").onclick = () => show("box");
-document.getElementById("pocketList").addEventListener("click", e => {
+const buyCredit = document.getElementById("buyCredit");
+if (buyCredit) buyCredit.onclick = () => {
+  const chip = selectedChip();
+  const s = state();
+  if (s.credit < chip.amt) {
+    toast("Need " + money(chip.amt) + " credit for this box");
+    return;
+  }
+  patch({ credit: s.credit - chip.amt });
+  addChip(chip.amt, 1);
+  toast(chip.box + " unlocked with credit");
+  show("box");
+};
+const paidBtn = document.getElementById("paidBtn");
+if (paidBtn) paidBtn.onclick = () => {
+  const pending = readPending();
+  const amt = (pending && pending.amt) || selectedChip().amt;
+  addChip(amt, 1);
+  clearPending();
+  toast("Box added");
+  show("box");
+};
+const toBox = document.getElementById("toBox");
+if (toBox) toBox.onclick = () => show("box");
+const pocketList = document.getElementById("pocketList");
+if (pocketList) pocketList.addEventListener("click", e => {
   const btn = e.target.closest("[data-sell]");
   if (!btn) return;
   const s = state();
@@ -294,14 +287,15 @@ document.getElementById("pocketList").addEventListener("click", e => {
   paintCredit();
   toast("Sold back to the house.");
 });
-document.getElementById("spinBtn").onclick = () => {
+const spinBtn = document.getElementById("spinBtn");
+if (spinBtn) spinBtn.onclick = () => {
   const s = state();
   if (s.spinning) return;
   const chip = selectedChip();
   const have = s.owned[chip.amt] || 0;
   if (have < 1) {
-    document.getElementById("spinResult").textContent = "Buy the " + chip.name + " chip first. It lives on the Chips page.";
-    toast("No chip for that box.");
+    document.getElementById("spinResult").textContent = "Buy " + chip.box + " first.";
+    toast("No box to open");
     return;
   }
   const owned = Object.assign({}, s.owned);
@@ -316,7 +310,7 @@ document.getElementById("spinBtn").onclick = () => {
   built.reel.style.transition = "none";
   built.reel.style.transform = "translateX(0px)";
   patch({ spinning: true });
-  document.getElementById("spinBtn").disabled = true;
+  spinBtn.disabled = true;
   document.getElementById("spinResult").textContent = "Lid is off. Don't blink.";
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
@@ -328,77 +322,30 @@ document.getElementById("spinBtn").onclick = () => {
     const now = state();
     if (winner.type === "credit") {
       patch({ credit: now.credit + winner.value, spinning: false });
-      document.getElementById("spinResult").textContent = "Landed on " + winner.name + ". " + money(winner.value) + " to your store credit.";
+      document.getElementById("spinResult").textContent = "Landed on " + winner.name + ". " + money(winner.value) + " store credit. Use it to buy another box.";
     } else {
       const pocket = now.pocket.slice();
       pocket.push({ name: winner.name, value: winner.value, at: Date.now() });
       patch({ pocket: pocket, spinning: false });
-      document.getElementById("spinResult").textContent = "You pulled " + winner.name + ". It sits in your pocket until you sell it.";
+      document.getElementById("spinResult").textContent = "You pulled " + winner.name + ". Sell it in Pocket for store credit.";
     }
     paintCredit();
-    document.getElementById("spinBtn").disabled = false;
+    spinBtn.disabled = false;
   }, 5000);
 };
-const shareBtn = document.getElementById("shareBtn");
-if (shareBtn) shareBtn.onclick = async () => {
-  const data = { title: "Broke Legend", text: "Buy a chip. Open the box.", url: shareUrl };
-  try { if (navigator.share) { await navigator.share(data); return; } } catch (e) { if (e && e.name === "AbortError") return; }
-  try { await navigator.clipboard.writeText(shareUrl); toast("Link copied"); } catch (e) { prompt("Copy this link", shareUrl); }
-};
-function rainCards() {
-  const ranks = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
-  const suits = ["\u2660","\u2665","\u2666","\u2663"];
-  const bits = [];
-  const H = window.innerHeight, W = window.innerWidth;
-  function spawn(i) {
-    const s = suits[i % 4], left = i % 2 === 0;
-    const el = document.createElement("div");
-    el.className = "flycard" + ((s === "\u2665" || s === "\u2666") ? " red" : "");
-    el.innerHTML = "<b>" + ranks[i % 13] + "</b><i>" + s + "</i>";
-    document.body.appendChild(el);
-    const ang = (30 + Math.random() * 40) * Math.PI / 180;
-    const speed = 8 + Math.random() * 5;
-    bits.push({ el: el, x: left ? 14 : W - 52, y: H - 58, vx: (left ? 1 : -1) * Math.cos(ang) * speed, vy: -Math.sin(ang) * speed, g: 0.18, rot: 0, spin: (left ? 1 : -1) * 3, life: 0, max: 2800 });
-  }
-  let n = 0;
-  const emitter = setInterval(() => { spawn(n++); spawn(n++); if (n >= 60) clearInterval(emitter); }, 40);
-  function tick() {
-    for (let i = bits.length - 1; i >= 0; i--) {
-      const c = bits[i];
-      c.vy += c.g; c.x += c.vx; c.y += c.vy; c.rot += c.spin; c.life += 16;
-      c.el.style.transform = "translate(" + c.x + "px," + c.y + "px) rotate(" + c.rot + "deg)";
-      c.el.style.opacity = c.life > c.max - 400 ? String(Math.max(0, 1 - (c.life - (c.max - 400)) / 400)) : "1";
-      if (c.life > c.max || c.y > H + 80) { c.el.remove(); bits.splice(i, 1); }
-    }
-    if (bits.length || n < 60) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-  toast("Chip is on the felt.");
-}
-(function extraCss() {
-  const s = document.createElement("style");
-  s.textContent = ".flycard{position:fixed;left:0;top:0;width:40px;height:56px;background:#fffdf8;border-radius:6px;z-index:80;pointer-events:none;font:700 12px/1 DM Sans,sans-serif;color:#1a1a1a;padding:5px;box-shadow:0 10px 16px rgba(0,0,0,.3)}.flycard.red{color:#b4232c}";
-  document.head.appendChild(s);
-})();
 paintChips();
 paintOwned();
 paintOdds();
-buildReel(prizesFor(selectedChip()), prizesFor(selectedChip())[0], 16);
 const startTab = (location.hash || "#chips").replace("#", "");
-show(["chips", "box", "pocket", "leaderboard"].includes(startTab) ? startTab : "chips");
-loadPublicBoard().then(() => { paintBoard(); paintMeter(); });
-paintMeter();
+show(["chips", "box", "pocket"].includes(startTab) ? startTab : "chips");
 if (/[?&]tipped=1/.test(location.search) || /[?&]amt=/.test(location.search)) {
   const q = new URLSearchParams(location.search);
-  const pending = Number(q.get("amt") || sessionStorage.getItem("bl_pending_chip") || sessionStorage.getItem("bl_pending_tip") || 0);
+  const pending = Number(q.get("amt") || (readPending() && readPending().amt) || 0);
   if (pending) {
     addChip(pending, 1);
-    recordTip(pending);
-    setTimeout(rainCards, 200);
+    document.getElementById("spinResult").textContent = selectedChip().box + " is ready. Unlock it.";
     show("box");
-    document.getElementById("spinResult").textContent = "$" + pending + " chip is on the table. Unlock the box.";
   }
-  sessionStorage.removeItem("bl_pending_tip");
-  sessionStorage.removeItem("bl_pending_chip");
+  clearPending();
   history.replaceState({}, "", location.pathname + "#box");
 }
